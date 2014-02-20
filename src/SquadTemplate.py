@@ -18,6 +18,7 @@ class SquadTemplate(Entity):
     mobility = ManyToOne('SquadMobility')
     speed = Field(Integer, required=False, default=0)
     transport = Field(Integer, required=False, default=0)
+    support = Field(Boolean, required=False, default=False)
     fields = [id, name, ts, raise_cost, supply, weight, tl, type, mobility, speed, transport]
 
     def __repr__(self):
@@ -29,6 +30,9 @@ class SquadTemplate(Entity):
                (str(self.ts), str(self.raise_cost), str(self.supply), str(self.weight), str(self.tl), ','.join([t.name for t in self.type]))
 
     def calcer(self):
-            return [str(self.id), self.name, str(self.ts), str(self.raise_cost), str(self.supply), str(self.weight),
-                    str(self.tl), ', '.join([t.name for t in self.type]), self.mobility.name, self.speed, str(self.transport), '']
+        res = ''
+        if self.support:
+            res = 'X'
+        return [str(self.id), self.name, str(self.ts), str(self.raise_cost), str(self.supply), str(self.weight),
+                str(self.tl), ', '.join([t.name for t in self.type]), self.mobility.name, self.speed, str(self.transport), res,'']
 

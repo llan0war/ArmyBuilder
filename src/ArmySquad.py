@@ -22,6 +22,7 @@ class ArmySquad(Entity):
     equip = ManyToOne('SquadEquip')
     exp = ManyToOne('SquadExp')
     transport = Field(Integer, required=False, default=0)
+    support = Field(Boolean, required=False, default=False)
     fields = [id, name, type, mods, casualities, templ, mobility]
 
 
@@ -35,6 +36,7 @@ class ArmySquad(Entity):
         self.weight = int(self.templ.weight * (100 + max(sum([md.weight for md in modes]), -80))/100 + 0.5)
         self.tl = self.templ.tl
         self.transport = self.templ.transport
+        self.support = self.templ.support
 
     def __repr__(self):
         return 'ArmySquad %s ts: %s raise: %s supply: %s weight: %s tl: %s type: %s id: %s ' % \
@@ -50,6 +52,9 @@ class ArmySquad(Entity):
                 str(self.casualities), self.templ.name, self.mobility.name, self.equip.name, self.exp.name, '']
 
     def typelist(self):
+        supp = ''
+        if self.support:
+            supp = ' \n Support'
         res = 'Squad: %s \n TS: %s \n Raise Cost: %s \n Weight: %s \n TL: %s \n Supply: %s \n Speed: %s \n Transport: %s' % \
               (self.name, str(self.ts), str(self.raise_cost), str(self.weight), str(self.tl), str(self.supply), self.speed, self.transport)
-        return res
+        return res + supp

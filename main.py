@@ -24,12 +24,14 @@ class MainWindow(QtGui.QMainWindow):
         self.loaded = True
 
     def load_data(self):
+        curtab = self.mainwindow.toolBox.currentIndex()
         core.calc_all()
         self.fill_templatetable()
         self.fill_modstable()
         self.fill_armytree()
         self.fill_squadtable()
         self.fill_typetable()
+        self.mainwindow.toolBox.setCurrentIndex(curtab)
 
     def fill_armytree(self):
         self.loaded = False
@@ -120,8 +122,8 @@ class MainWindow(QtGui.QMainWindow):
     def fill_templatetable(self):
         self.loaded = False
         self.mainwindow.templatetable.clear()
-        self.mainwindow.templatetable.setColumnCount(11)
-        for num, dat in enumerate(['ID', 'Name', 'TS', 'Raise', 'Supply', 'Weight', 'TL', 'Type', 'Mobility', u'Скорость', u'Грузоподьемность']):
+        self.mainwindow.templatetable.setColumnCount(12)
+        for num, dat in enumerate(['ID', 'Name', 'TS', 'Raise', 'Supply', 'Weight', 'TL', 'Type', 'Mobility', u'Скорость', u'Грузоподьемность', 'Support']):
             self.mainwindow.templatetable.setHorizontalHeaderItem(num, QtGui.QTableWidgetItem(dat))
         self.mainwindow.templatetable.setColumnHidden(0, True)
         quer = SquadTemplate.SquadTemplate.query.all()
@@ -130,7 +132,7 @@ class MainWindow(QtGui.QMainWindow):
             fields = templ.calcer()
             for num, dat in enumerate(fields):
                 res = QtGui.QTableWidgetItem(dat)
-                if num in [7, 8, 9]: res.setFlags(QtCore.Qt.ItemIsEnabled)
+                if num in [7, 8, 9, 11]: res.setFlags(QtCore.Qt.ItemIsEnabled)
                 self.mainwindow.templatetable.setItem(cur, num, res)
         self.loaded = True
 
@@ -142,11 +144,18 @@ class MainWindow(QtGui.QMainWindow):
         if col == 7:
             target = SquadTemplate.SquadTemplate.get_by(id=int(self.mainwindow.templatetable.item(row, 0).text()))
             dlg = TypeChange(self, types=[t.id for t in target.type], item=target)
-            dlg.exec_()
+            if dlg.exec_():
+                self.load_data()
         if col == 8:
             target = SquadTemplate.SquadTemplate.get_by(id=int(self.mainwindow.templatetable.item(row, 0).text()))
             dlg = MobilityChanger(self, mob=target.mobility, tl=target.tl, item=target)
-            dlg.exec_()
+            if dlg.exec_():
+                self.load_data()
+        if col == 11:
+            target = SquadTemplate.SquadTemplate.get_by(id=int(self.mainwindow.templatetable.item(row, 0).text()))
+            target.support = not target.support
+            core.saveData()
+            self.load_data()
 
     def on_squadtable_cellDoubleClicked(self, row, col):
         '''if col == 2:
@@ -156,19 +165,23 @@ class MainWindow(QtGui.QMainWindow):
         if col == 3:
             target = ArmySquad.ArmySquad.get_by(id=int(self.mainwindow.squadtable.item(row, 0).text()))
             dlg = ModsChange(self, mods=[t.id for t in target.mods], item=target)
-            dlg.exec_()
+            if dlg.exec_():
+                self.load_data()
         if col == 5:
             target = ArmySquad.ArmySquad.get_by(id=int(self.mainwindow.squadtable.item(row, 0).text()))
             dlg = TemplChange(self, templ=target.templ, item=target)
-            dlg.exec_()
+            if dlg.exec_():
+                self.load_data()
         if col == 7:
             target = ArmySquad.ArmySquad.get_by(id=int(self.mainwindow.squadtable.item(row, 0).text()))
             dlg = EquipChanger(self, eq=target.equip, item=target)
-            dlg.exec_()
+            if dlg.exec_():
+                self.load_data()
         if col == 8:
             target = ArmySquad.ArmySquad.get_by(id=int(self.mainwindow.squadtable.item(row, 0).text()))
             dlg = ExpChanger(self, exp=target.exp, item=target)
-            dlg.exec_()
+            if dlg.exec_():
+                self.load_data()
         '''if col == 6:
             target = SquadTemplate.SquadTemplate.get_by(id=int(self.mainwindow.squadtable.item(row, 0).text()))
             dlg = MobilityChanger(self, mob=target.mobility, tl=target.tl, item=target)

@@ -217,7 +217,10 @@ class MainWindow(QtGui.QMainWindow):
             print curr_view
             if curr_view == 1:
                 #print SquadTemplate.SquadTemplate.query.first()
-                newsquad = ArmySquad.ArmySquad(name=u'new', templ=SquadTemplate.SquadTemplate.query.first(), equip=SquadEquip.SquadEquip.query.first(), mobility=SquadMobility.SquadMobility.query.first())
+                newsquad = ArmySquad.ArmySquad(name=u'new', templ=SquadTemplate.SquadTemplate.query.first(),
+                                               equip=SquadEquip.SquadEquip.query.first(),
+                                               mobility=SquadMobility.SquadMobility.query.first(),
+                                               exp=SquadExp.SquadExp.query.first())
                 core.saveData()
                 self.load_data()
             if curr_view == 2:

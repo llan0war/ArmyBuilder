@@ -1,11 +1,12 @@
 __author__ = 'a.libkind'
 
-from src import SquadMobility, SquadTemplate, SquadTypes, SquadMods, ArmySquad, Army, SquadEquip
+from src import SquadMobility, SquadTemplate, SquadTypes, SquadMods, ArmySquad, Army, SquadEquip, SquadExp
 from PyQt4 import QtGui, QtCore
 from typechange import Ui_TypeChange
 from templchange import Ui_TemplateChange
 from mobilitychanger import Ui_MobilityChange
 from equipchange import Ui_EquipChange
+from expchange import Ui_ExpChange
 from src import core
 
 
@@ -178,4 +179,35 @@ class EquipChanger(QtGui.QDialog):
         if type(ite) == type(1):
             item = self.typedialog.equiplist.currentText()
             res = SquadEquip.SquadEquip.get_by(id=int(item.split(':')[0]))
+            self.typedialog.label.setText(res.name)
+
+class ExpChanger(QtGui.QDialog):
+    def __init__(self, parent=None, exp=None, item=None):
+        QtGui.QDialog.__init__(self, parent)
+        self.typedialog = Ui_ExpChange()
+        self.typedialog.setupUi(self)
+        self.res = 0
+        self.item = item
+        self.fill_types(exp)
+
+    def fill_types(self, types):
+        self.typedialog.explist.clear()
+        quer = SquadExp.SquadExp.query.all()
+        items = ['%s: %s' % (str(templ.id), templ.name) for templ in quer]
+        self.typedialog.explist.addItems(items)
+        self.typedialog.explist.setCurrentIndex(items.index('%s: %s' % (str(types.id), types.name)))
+
+    def accept(self):
+        item = self.typedialog.explist.currentText()
+        self.item.exp = SquadExp.SquadExp.get_by(id=int(item.split(':')[0]))
+        core.saveData()
+        super(ExpChanger, self).accept()
+
+    def reject(self):
+        super(ExpChanger, self).reject()
+
+    def on_explist_currentIndexChanged(self, ite):
+        if type(ite) == type(1):
+            item = self.typedialog.explist.currentText()
+            res = SquadExp.SquadExp.get_by(id=int(item.split(':')[0]))
             self.typedialog.label.setText(res.name)

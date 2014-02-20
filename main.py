@@ -54,8 +54,8 @@ class MainWindow(QtGui.QMainWindow):
     def fill_squadtable(self):
         self.loaded = False
         self.mainwindow.squadtable.clear()
-        self.mainwindow.squadtable.setColumnCount(8)
-        for num, dat in enumerate(['ID', 'Name', 'Type', 'Mods', 'Casualities', 'Template', 'Mobility', 'Equip']):
+        self.mainwindow.squadtable.setColumnCount(9)
+        for num, dat in enumerate(['ID', 'Name', 'Type', 'Mods', 'Casualities', 'Template', 'Mobility', 'Equip', 'Expirience']):
             self.mainwindow.squadtable.setHorizontalHeaderItem(num, QtGui.QTableWidgetItem(dat))
         self.mainwindow.squadtable.setColumnHidden(0, True)
         quer = ArmySquad.ArmySquad.query.all()
@@ -165,6 +165,11 @@ class MainWindow(QtGui.QMainWindow):
             target = ArmySquad.ArmySquad.get_by(id=int(self.mainwindow.squadtable.item(row, 0).text()))
             dlg = EquipChanger(self, eq=target.equip, item=target)
             dlg.exec_()
+        if col == 8:
+            target = ArmySquad.ArmySquad.get_by(id=int(self.mainwindow.squadtable.item(row, 0).text()))
+            dlg = ExpChanger(self, exp=target.exp, item=target)
+            dlg.exec_()
+
         '''if col == 6:
             target = SquadTemplate.SquadTemplate.get_by(id=int(self.mainwindow.squadtable.item(row, 0).text()))
             dlg = MobilityChanger(self, mob=target.mobility, tl=target.tl, item=target)

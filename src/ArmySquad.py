@@ -20,8 +20,9 @@ class ArmySquad(Entity):
     speed = Field(Integer, required=False, default=0)
     mobility = ManyToOne('SquadMobility')
     equip = ManyToOne('SquadEquip')
+    exp = ManyToOne('SquadExp')
 
-    fields = [id, name,  type, mods, casualities, templ, mobility]
+    fields = [id, name, type, mods, casualities, templ, mobility]
 
 
     def calc_all(self):
@@ -45,7 +46,7 @@ class ArmySquad(Entity):
                 str(self.casualities), self.templ.name, self.mobility.name, self.speed, '']'''
 
         return [str(self.id), self.name, ', '.join([t.name for t in self.type]), ', '.join([t.name for t in self.mods]),
-                str(self.casualities), self.templ.name, self.mobility.name, self.equip.name, '']
+                str(self.casualities), self.templ.name, self.mobility.name, self.equip.name, self.exp.name, '']
 
     def typelist(self):
         res = 'Squad: %s \n TS: %s \n Raise Cost: %s \n Weight: %s \n TL: %s \n Supply: %s \n Speed: %s' % \

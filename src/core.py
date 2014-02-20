@@ -2,7 +2,7 @@ __author__ = 'a.libkind'
 
 import os
 from elixir import *
-from src import SquadTemplate, ArmySquad, SquadTypes, SquadMods, Army, SquadMobility, SquadEquip
+from src import SquadTemplate, ArmySquad, SquadTypes, SquadMods, Army, SquadMobility, SquadEquip, SquadExp
 
 dbdir = os.path.join(os.getcwd(), "db")
 dbfile = os.path.join(dbdir, "army.sqlite")
@@ -87,13 +87,17 @@ def sampleArmy():
     eq3 = SquadEquip.SquadEquip(name=u'Good')
     eq4 = SquadEquip.SquadEquip(name=u'Basic')
     eq5 = SquadEquip.SquadEquip(name=u'Poor')
+    exp1 = SquadExp.SquadExp(name=u'Elite')
+    exp2 = SquadExp.SquadExp(name=u'Good')
+    exp3 = SquadExp.SquadExp(name=u'Average')
+    exp4 = SquadExp.SquadExp(name=u'Inferior')
     templ1 = SquadTemplate.SquadTemplate(name=u'Magic Pony', mobility=foot, type=[naval, Fire], raise_cost=5, supply=5, weight=5, tl=5, ts=5)
     templ2 = SquadTemplate.SquadTemplate(name=u'Battle Pony', mobility=mount,  type=[armor], raise_cost=5, supply=5, weight=5, tl=5, ts=5)
     templ3 = SquadTemplate.SquadTemplate(name=u'Fly Pony', mobility=mechanized, type=[air, naval], raise_cost=5, supply=5, weight=5, tl=5, ts=5)
     hero = SquadMods.SquadMods(name=u'Hero', ts=100, raise_cost=100, supply=100)
     child = SquadMods.SquadMods(name=u'Child', ts=-50, raise_cost=-50, supply=-50)
-    squad1 = ArmySquad.ArmySquad(name=u'Applejack', templ=templ2, mods=[hero], equip=eq4)
-    squad2 = ArmySquad.ArmySquad(name=u'Rarity', templ=templ1, equip=eq4)
-    squad3 = ArmySquad.ArmySquad(name=u'Fluttershy', templ=templ3, mods=[child], equip=eq4)
+    squad1 = ArmySquad.ArmySquad(name=u'Applejack', templ=templ2, mods=[hero], equip=eq4, exp=exp1)
+    squad2 = ArmySquad.ArmySquad(name=u'Rarity', templ=templ1, equip=eq4, exp=exp1)
+    squad3 = ArmySquad.ArmySquad(name=u'Fluttershy', templ=templ3, mods=[child], equip=eq4, exp=exp1)
     army1 = Army.Army(name=u'Pony Force', squads=[squad1, squad2, squad3])
     saveData()

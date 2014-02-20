@@ -18,7 +18,7 @@ class Army(Entity):
     stype = 'Army'
 
     def __repr__(self):
-        return 'Army'
+        return 'Army %s %d' % (self.name, self.id)
 
     def calcer(self):
         armlst = self.squads

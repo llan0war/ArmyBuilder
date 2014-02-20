@@ -284,6 +284,15 @@ class MainWindow(QtGui.QMainWindow):
                     changed_item.delete()
                 core.saveData()
                 self.load_data()
+            if curr_view == 0:
+                item = self.mainwindow.armylist.currentItem()
+                while item.parent():
+                    item = item.parent()
+                if item.text(2) == 'Army':
+                    changed_item = Army.Army.get_by(id=int(item.text(1)))
+                    changed_item.delete()
+                    core.saveData()
+                self.load_data()
 
     def on_saveaction_triggered(self, foo=True):
         if not foo:
@@ -295,10 +304,7 @@ class MainWindow(QtGui.QMainWindow):
                         cur_army = Army.Army.get_by(id=int(item.text(1)))
                         #squads_num = item.childCount()
                         squads = [ArmySquad.ArmySquad.get_by(id=int(item.child(sq).text(1))) for sq in range(item.childCount())]
-                        print squads
                         cur_army.squads = squads
-                        #for sq in range(squads_num):
-                        #   cursq = ArmySquad.ArmySquad.get_by(id=item.child(sq).text(1))
             core.saveData()
             self.load_data()
 

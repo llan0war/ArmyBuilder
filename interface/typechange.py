@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'typechange.ui'
 #
-# Created: Thu Feb 20 18:08:07 2014
+# Created: Thu Feb 20 18:28:09 2014
 #      by: PyQt4 UI code generator 4.10.3
 #
 # WARNING! All changes made in this file will be lost!

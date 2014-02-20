@@ -57,6 +57,6 @@ class ArmySquad(Entity):
         supp = ''
         if self.support:
             supp = ' \n Support'
-        res = 'Squad: %s \n TS: %s \n Raise Cost: %s \n Weight: %s \n TL: %s \n Supply: %s \n Speed: %s \n Transport: %s' % \
-              (self.name, str(self.ts), str(self.raise_cost), str(self.weight), str(self.tl), str(self.supply), self.speed, self.transport)
+        res = 'Squad: %s \n TS: %s \n Raise Cost: %s \n Weight: %s \n TL: %s \n Supply: %s \n Speed: %s \n Transport: %s \n Army:' % \
+              (self.name, str(self.ts), str(self.raise_cost), str(self.weight), str(self.tl), str(self.supply), self.speed, self.transport, self.army.name)
         return res + supp

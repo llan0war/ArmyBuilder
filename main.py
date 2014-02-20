@@ -169,7 +169,6 @@ class MainWindow(QtGui.QMainWindow):
             target = ArmySquad.ArmySquad.get_by(id=int(self.mainwindow.squadtable.item(row, 0).text()))
             dlg = ExpChanger(self, exp=target.exp, item=target)
             dlg.exec_()
-
         '''if col == 6:
             target = SquadTemplate.SquadTemplate.get_by(id=int(self.mainwindow.squadtable.item(row, 0).text()))
             dlg = MobilityChanger(self, mob=target.mobility, tl=target.tl, item=target)
@@ -178,6 +177,7 @@ class MainWindow(QtGui.QMainWindow):
     def on_templatetable_itemChanged(self, item):
         if self.loaded and not item.column() == 7:
             changed_item = SquadTemplate.SquadTemplate.get_by(id=int(self.mainwindow.templatetable.item(item.row(), 0).text()))
+            print 'Changed %s value to %s' % (changed_item.fields[item.column()].name, str(item.text()))
             setattr(changed_item, changed_item.fields[item.column()].name, str(item.text()))
             core.saveData()
 
@@ -214,14 +214,12 @@ class MainWindow(QtGui.QMainWindow):
     def on_addaction_triggered(self, foo=True):
         if not foo:
             curr_view = self.mainwindow.toolBox.currentIndex()
-            print curr_view
             if curr_view == 1:
                 #print SquadTemplate.SquadTemplate.query.first()
                 newsquad = ArmySquad.ArmySquad(name=u'new', templ=SquadTemplate.SquadTemplate.query.first(),
                                                equip=SquadEquip.SquadEquip.query.first(),
                                                mobility=SquadMobility.SquadMobility.query.first(),
                                                exp=SquadExp.SquadExp.query.first())
-                print newsquad
                 core.saveData()
                 self.load_data()
             if curr_view == 2:

@@ -39,9 +39,7 @@ class TypeChange(QtGui.QDialog):
         for i in range(child_count):
             item = root.child(i)
             if item.checkState(1):
-                print 'Found', item.text(1)
                 self.item.type.append(SquadTypes.SquadTypes.get_by(id=int(item.text(0))))
-        print self.item.type
         core.saveData()
         super(TypeChange, self).accept()
 
@@ -131,7 +129,6 @@ class TemplChange(QtGui.QDialog):
 
     def on_tllist_currentIndexChanged(self, ite):
         if type(ite) == type(1):
-            print self.typedialog.tllist.currentText(), self.typedialog.tllist.currentText().split(':')[1]
             curtl = int(self.typedialog.tllist.currentText().split(':')[1])
             self.fill_types(curtl)
 

@@ -30,5 +30,5 @@ class SquadTemplate(Entity):
 
     def calcer(self):
             return [str(self.id), self.name, str(self.ts), str(self.raise_cost), str(self.supply), str(self.weight),
-                    str(self.tl), ', '.join([t.name for t in self.type]), self.mobility.name, self.speed, '']
+                    str(self.tl), ', '.join([t.name for t in self.type]), self.mobility.name, self.speed, str(self.transport), '']
 

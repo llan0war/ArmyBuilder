@@ -22,7 +22,6 @@ class ArmySquad(Entity):
     equip = ManyToOne('SquadEquip')
     exp = ManyToOne('SquadExp')
     transport = Field(Integer, required=False, default=0)
-
     fields = [id, name, type, mods, casualities, templ, mobility]
 
 

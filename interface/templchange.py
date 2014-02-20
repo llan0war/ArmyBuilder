@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'templchange.ui'
 #
-# Created: Thu Feb 20 18:28:08 2014
+# Created: Thu Feb 20 19:02:03 2014
 #      by: PyQt4 UI code generator 4.10.3
 #
 # WARNING! All changes made in this file will be lost!

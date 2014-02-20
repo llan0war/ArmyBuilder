@@ -24,7 +24,7 @@ class Army(Entity):
         armlst = self.squads
         #int(self.templ.ts * (100 + max(sum([md.ts for md in modes]), -80))/100 + 0.5)
 
-        self.ts = sum([int(al.ts*(100 - al.casualities)/100 + 0.5) for al in armlst])
+        self.ts = sum([int(al.ts*(100 - al.casualities)/100 + 0.5) for al in armlst if not al.support])
         self.raise_cost = sum([int(al.raise_cost*(100 - al.casualities)/100 + 0.5) for al in armlst])
         self.supply = sum([int(al.supply*(100 - al.casualities)/100 + 0.5) for al in armlst])
         self.weight = sum([int(al.weight*(100 - al.casualities)/100 + 0.5) for al in armlst])

@@ -30,15 +30,24 @@ class ArmySquad(Entity):
 
     def calc_all(self):
         modes = self.mods
-        self.ts = int(self.templ.ts * (100 + max(sum([md.ts for md in modes]), -80))/100 + 0.5)
         self.type = self.templ.type
         self.mobility = self.templ.mobility
-        self.raise_cost = int(self.templ.raise_cost * (100 + max(sum([md.raise_cost for md in modes]), -80))/100 + 0.5)
-        self.supply = int(self.templ.supply * (100 + max(sum([md.supply for md in modes]), -80))/100 + 0.5)
-        self.weight = int(self.templ.weight * (100 + max(sum([md.weight for md in modes]), -80))/100 + 0.5)
         self.tl = self.templ.tl
         self.transport = self.templ.transport
         self.support = self.templ.support
+
+        ts_mod = sum([md.ts for md in modes]) + self.equip.ts + self.exp.ts
+        self.ts = int(self.templ.ts * (100 + max(ts_mod, -80))/100 + 0.5)*(1 if not u'Super-Soldier' in [md.name for md in modes] else 2)
+
+        raise_mod = sum([md.raise_cost for md in modes]) + self.equip.raise_cost + self.exp.raise_cost + \
+                    (-50 if ('Fanatic' in [md.name for md in modes]) and self.exp.name == u'Good' else 0) + \
+                    (-100 if ('Fanatic' in [md.name for md in modes]) and self.exp.name == u'Elite' else 0)
+        self.raise_cost = int(self.templ.raise_cost * (100 + max(raise_mod, -80))/100 + 0.5)
+
+        supply_mod = sum([md.supply for md in modes]) + self.equip.supply + self.exp.supply
+        self.supply = int(self.templ.supply * (100 + max(supply_mod, -80))/100 + 0.5)
+
+        self.weight = int(self.templ.weight * (100 + max(sum([md.weight for md in modes]), -80))/100 + 0.5)
 
     def __repr__(self):
         return 'ArmySquad %s ts: %s raise: %s supply: %s weight: %s tl: %s type: %s id: %s ' % \
@@ -57,6 +66,6 @@ class ArmySquad(Entity):
         supp = ''
         if self.support:
             supp = ' \n Support'
-        res = 'Squad: %s \n TS: %s \n Raise Cost: %s \n Weight: %s \n TL: %s \n Supply: %s \n Speed: %s \n Transport: %s \n Army:' % \
+        res = 'Squad: %s \n TS: %s \n Raise Cost: %s \n Weight: %s \n TL: %s \n Supply: %s \n Speed: %s \n Transport: %s \n Army: %s' % \
               (self.name, str(self.ts), str(self.raise_cost), str(self.weight), str(self.tl), str(self.supply), self.speed, self.transport, self.army.name)
         return res + supp

@@ -25,9 +25,6 @@ def calc_all():
     quer = SquadTemplate.SquadTemplate.query.all()
     for cur, templ in enumerate(quer):
         templ.speed = speed_calcer(templ.mobility, templ.tl)
-
-
-
     saveData()
 
 
@@ -90,15 +87,15 @@ def sampleArmy():
     Sea = SquadMobility.SquadMobility(name=u'Sea')
     Fair = SquadMobility.SquadMobility(name=u'Fast air')
     Sair = SquadMobility.SquadMobility(name=u'Slow air')
-    eq1 = SquadEquip.SquadEquip(name=u'Very Fine')
-    eq2 = SquadEquip.SquadEquip(name=u'Fine')
-    eq3 = SquadEquip.SquadEquip(name=u'Good')
-    eq4 = SquadEquip.SquadEquip(name=u'Basic')
-    eq5 = SquadEquip.SquadEquip(name=u'Poor')
-    exp1 = SquadExp.SquadExp(name=u'Elite')
-    exp2 = SquadExp.SquadExp(name=u'Good')
-    exp3 = SquadExp.SquadExp(name=u'Average')
-    exp4 = SquadExp.SquadExp(name=u'Inferior')
+    eq1 = SquadEquip.SquadEquip(name=u'Very Fine', ts=150, raise_cost=200, supply=150)
+    eq2 = SquadEquip.SquadEquip(name=u'Fine', ts=100, raise_cost=100, supply=100)
+    eq3 = SquadEquip.SquadEquip(name=u'Good', ts=50, raise_cost=50, supply=50)
+    eq4 = SquadEquip.SquadEquip(name=u'Basic', ts=0, raise_cost=0, supply=0)
+    eq5 = SquadEquip.SquadEquip(name=u'Poor', ts=-25, raise_cost=-25, supply=-25)
+    exp1 = SquadExp.SquadExp(name=u'Elite', ts=100, raise_cost=200, supply=40)
+    exp2 = SquadExp.SquadExp(name=u'Good', ts=50, raise_cost=100, supply=20)
+    exp3 = SquadExp.SquadExp(name=u'Average', ts=0, raise_cost=0, supply=0)
+    exp4 = SquadExp.SquadExp(name=u'Inferior', ts=-50, raise_cost=-50, supply=-50)
     templ99 = SquadTemplate.SquadTemplate(name=u'Magic Pony', mobility=Foot, type=[Naval, Fire], raise_cost=5, supply=5, weight=5, tl=5, ts=5)
     templ98 = SquadTemplate.SquadTemplate(name=u'Battle Pony', mobility=Mount,  type=[Armor], raise_cost=5, supply=5, weight=5, tl=4, ts=5)
     templ97 = SquadTemplate.SquadTemplate(name=u'Fly Pony', mobility=Mechanized, type=[Air, Naval], raise_cost=5, supply=5, weight=5, tl=3, ts=5)

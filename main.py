@@ -203,6 +203,9 @@ class MainWindow(QtGui.QMainWindow):
             changed_item = Army.Army.get_by(id=int(index))
             self.mainwindow.armyopts.setText(changed_item.typelist())
 
+    def on_armylist_itemDoubleClicked(self, item):
+        pass
+
     def on_squadtable_itemChanged(self, item):
         if self.loaded:
             changed_item = ArmySquad.ArmySquad.get_by(id=int(self.mainwindow.squadtable.item(item.row(), 0).text()))

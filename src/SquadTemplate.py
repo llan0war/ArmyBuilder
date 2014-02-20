@@ -17,7 +17,8 @@ class SquadTemplate(Entity):
     squads = OneToMany('ArmySquad')
     mobility = ManyToOne('SquadMobility')
     speed = Field(Integer, required=False, default=0)
-    fields = [id, name, ts, raise_cost, supply, weight, tl, type, mobility, speed]
+    transport = Field(Integer, required=False, default=0)
+    fields = [id, name, ts, raise_cost, supply, weight, tl, type, mobility, speed, transport]
 
     def __repr__(self):
         return 'Template %s ts: %s raise: %s supply: %s weight: %s tl: %s type: %s ' % \

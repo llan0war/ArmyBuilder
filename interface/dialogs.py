@@ -91,16 +91,28 @@ class TemplChange(QtGui.QDialog):
         QtGui.QDialog.__init__(self, parent)
         self.typedialog = Ui_TemplateChange()
         self.typedialog.setupUi(self)
-        self.fill_types(templ)
-        self.res = 0
+        self.loaded = False
         self.item = item
+        self.templ = templ
+        self.fill_tl()
+        self.loaded = True
 
-    def fill_types(self, types):
+    def fill_tl(self):
+        self.typedialog.tllist.clear()
+        quer = SquadTemplate.SquadTemplate.query.all()
+        items = list(set(['TL: %s' % str(templ.tl) for templ in quer]))
+        self.typedialog.tllist.addItems(items)
+        self.typedialog.tllist.setCurrentIndex(items.index('TL: %s' % str(self.templ.tl)))
+
+    def fill_types(self, tl):
+        self.loaded = False
         self.typedialog.templlist.clear()
         quer = SquadTemplate.SquadTemplate.query.all()
-        items = ['%s: %s' % (str(templ.id), templ.name) for templ in quer]
+        items = ['%s: %s' % (str(templ.id), templ.name) for templ in quer if templ.tl == tl]
         self.typedialog.templlist.addItems(items)
-        self.typedialog.templlist.setCurrentIndex(items.index('%s: %s' % (str(types.id), types.name)))
+        self.loaded = True
+        self.on_templlist_currentIndexChanged(self.typedialog.templlist.currentIndex())
+        if not self.loaded: self.typedialog.templlist.setCurrentIndex(items.index('%s: %s' % (str(self.templ.id), self.templ.name)))
 
     def accept(self):
         item = self.typedialog.templlist.currentText()
@@ -112,11 +124,16 @@ class TemplChange(QtGui.QDialog):
         super(TemplChange, self).reject()
 
     def on_templlist_currentIndexChanged(self, ite):
-        if type(ite) == type(1):
+        if type(ite) == type(1) and self.loaded:
             item = self.typedialog.templlist.currentText()
             res = SquadTemplate.SquadTemplate.get_by(id=int(item.split(':')[0]))
             self.typedialog.label.setText(res.printer())
 
+    def on_tllist_currentIndexChanged(self, ite):
+        if type(ite) == type(1):
+            print self.typedialog.tllist.currentText(), self.typedialog.tllist.currentText().split(':')[1]
+            curtl = int(self.typedialog.tllist.currentText().split(':')[1])
+            self.fill_types(curtl)
 
 class MobilityChanger(QtGui.QDialog):
     def __init__(self, parent=None, mob=None, tl=None, item=None):
@@ -150,6 +167,7 @@ class MobilityChanger(QtGui.QDialog):
             res = SquadMobility.SquadMobility.get_by(id=int(item.split(':')[0]))
             self.typedialog.label.setText(core.speed_calcer(res, self.tl))
 
+
 class EquipChanger(QtGui.QDialog):
     def __init__(self, parent=None, eq=None, item=None):
         QtGui.QDialog.__init__(self, parent)
@@ -180,6 +198,7 @@ class EquipChanger(QtGui.QDialog):
             item = self.typedialog.equiplist.currentText()
             res = SquadEquip.SquadEquip.get_by(id=int(item.split(':')[0]))
             self.typedialog.label.setText(res.name)
+
 
 class ExpChanger(QtGui.QDialog):
     def __init__(self, parent=None, exp=None, item=None):

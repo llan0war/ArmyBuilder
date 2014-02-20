@@ -120,8 +120,8 @@ class MainWindow(QtGui.QMainWindow):
     def fill_templatetable(self):
         self.loaded = False
         self.mainwindow.templatetable.clear()
-        self.mainwindow.templatetable.setColumnCount(10)
-        for num, dat in enumerate(['ID', 'Name', 'TS', 'Raise', 'Supply', 'Weight', 'TL', 'Type', 'Mobility', u'Скорость']):
+        self.mainwindow.templatetable.setColumnCount(11)
+        for num, dat in enumerate(['ID', 'Name', 'TS', 'Raise', 'Supply', 'Weight', 'TL', 'Type', 'Mobility', u'Скорость', u'Грузоподьемность']):
             self.mainwindow.templatetable.setHorizontalHeaderItem(num, QtGui.QTableWidgetItem(dat))
         self.mainwindow.templatetable.setColumnHidden(0, True)
         quer = SquadTemplate.SquadTemplate.query.all()
@@ -221,6 +221,7 @@ class MainWindow(QtGui.QMainWindow):
                                                equip=SquadEquip.SquadEquip.query.first(),
                                                mobility=SquadMobility.SquadMobility.query.first(),
                                                exp=SquadExp.SquadExp.query.first())
+                print newsquad
                 core.saveData()
                 self.load_data()
             if curr_view == 2:

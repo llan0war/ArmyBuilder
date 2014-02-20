@@ -4,7 +4,7 @@
 __author__ = 'a.libkind'
 
 from PyQt4 import QtGui, QtCore
-import sys, os
+import sys
 from interface.interface import Ui_MainWindow
 from interface.dialogs import *
 from src import core, SquadTemplate, ArmySquad, SquadTypes, SquadMods, Army, SquadMobility
@@ -36,8 +36,9 @@ class MainWindow(QtGui.QMainWindow):
     def fill_armytree(self):
         self.loaded = False
         self.mainwindow.armylist.clear()
-        self.mainwindow.armylist.setHeaderItem(QtGui.QTreeWidgetItem(['Name', 'ID', 'TS', 'Raise', 'Supply', 'Weight', 'TL', 'Type', 'Mods', 'Casualities']))
+        self.mainwindow.armylist.setHeaderItem(QtGui.QTreeWidgetItem(['Name', 'ID', 'SType' 'TS', 'Raise', 'Supply', 'Weight', 'TL', 'Type', 'Mods', 'Casualities']))
         self.mainwindow.armylist.setColumnHidden(1, True)
+        self.mainwindow.armylist.setColumnHidden(2, True)
         quer = Army.Army.query.all()
         for cur, templ in enumerate(quer):
             arm = templ.calcer2()
@@ -195,12 +196,12 @@ class MainWindow(QtGui.QMainWindow):
             core.saveData()
 
     def on_armylist_itemClicked(self, item):
-        if not item.parent():
-            index = item.text(1)
-        else:
-            index = item.parent().text(1)
-        changed_item = Army.Army.get_by(id=int(index))
-        self.mainwindow.armyopts.setText(changed_item.typelist())
+        while item.parent():
+            item = item.parent()
+        index = item.text(1)
+        if item.text(2) == 'Army':
+            changed_item = Army.Army.get_by(id=int(index))
+            self.mainwindow.armyopts.setText(changed_item.typelist())
 
     def on_squadtable_itemChanged(self, item):
         if self.loaded:
@@ -247,6 +248,10 @@ class MainWindow(QtGui.QMainWindow):
                 newtype = SquadTypes.SquadTypes(name=u'new')
                 core.saveData()
                 self.load_data()
+            if curr_view == 0:
+                newarmy = Army.Army(name=u'new')
+                core.saveData()
+                self.load_data()
 
     def on_removeaction_triggered(self, foo=True):
         if not foo:
@@ -279,6 +284,41 @@ class MainWindow(QtGui.QMainWindow):
                     changed_item.delete()
                 core.saveData()
                 self.load_data()
+
+    def on_saveaction_triggered(self, foo=True):
+        if not foo:
+            curr_view = self.mainwindow.toolBox.currentIndex()
+            if curr_view == 0:
+                for i in range(self.mainwindow.armylist.topLevelItemCount()):
+                    item = self.mainwindow.armylist.topLevelItem(i)
+                    if item.text(2) == 'Army':
+                        cur_army = Army.Army.get_by(id=int(item.text(1)))
+                        #squads_num = item.childCount()
+                        squads = [ArmySquad.ArmySquad.get_by(id=int(item.child(sq).text(1))) for sq in range(item.childCount())]
+                        print squads
+                        cur_army.squads = squads
+                        #for sq in range(squads_num):
+                        #   cursq = ArmySquad.ArmySquad.get_by(id=item.child(sq).text(1))
+            core.saveData()
+            self.load_data()
+
+    '''def on_armylist_currentItemChanged(self, a, b):
+        if b:
+            item = b
+            while item.parent():
+                item = item.parent()
+            print item.text(0), b.text(0)
+            if item.text(2) != 'Army':
+                print 'Unit %s change army to %s' % (b.text(0), item.text(0))
+
+                new_army = Army.Army.get_by(id=int(item.text(1)))
+                old_army = ArmySquad.ArmySquad.get_by(id=(int(b.text(1)))).army
+                old_squads = old_army.squads
+                old_squads.remove(b)
+                new_army.squads.append(b)
+
+                core.saveData()
+                self.load_data()'''
 
 if __name__ == '__main__':
 

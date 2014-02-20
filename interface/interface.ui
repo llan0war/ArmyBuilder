@@ -36,7 +36,7 @@
     <item>
      <widget class="QToolBox" name="toolBox">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="page">
        <property name="geometry">
@@ -53,6 +53,18 @@
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
          <widget class="QTreeWidget" name="armylist">
+          <property name="acceptDrops">
+           <bool>false</bool>
+          </property>
+          <property name="dragEnabled">
+           <bool>true</bool>
+          </property>
+          <property name="dragDropMode">
+           <enum>QAbstractItemView::InternalMove</enum>
+          </property>
+          <property name="defaultDropAction">
+           <enum>Qt::IgnoreAction</enum>
+          </property>
           <property name="animated">
            <bool>true</bool>
           </property>
@@ -398,6 +410,14 @@
        </layout>
       </widget>
       <widget class="QWidget" name="page_5">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>903</width>
+         <height>324</height>
+        </rect>
+       </property>
        <attribute name="label">
         <string>Типы войск</string>
        </attribute>
@@ -449,6 +469,7 @@
    <addaction name="addaction"/>
    <addaction name="removeaction"/>
    <addaction name="updateaction"/>
+   <addaction name="saveaction"/>
   </widget>
   <action name="addaction">
    <property name="text">
@@ -472,6 +493,11 @@
    </property>
    <property name="toolTip">
     <string>Update data</string>
+   </property>
+  </action>
+  <action name="saveaction">
+   <property name="text">
+    <string>Save</string>
    </property>
   </action>
  </widget>

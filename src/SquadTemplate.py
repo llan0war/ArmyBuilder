@@ -19,6 +19,9 @@ class SquadTemplate(Entity):
     speed = Field(Integer, required=False, default=0)
     transport = Field(Integer, required=False, default=0)
     support = Field(Boolean, required=False, default=False)
+    stype = 'Squad'
+
+
     fields = [id, name, ts, raise_cost, supply, weight, tl, type, mobility, speed, transport]
 
     def __repr__(self):

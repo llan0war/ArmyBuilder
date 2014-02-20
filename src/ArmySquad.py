@@ -21,10 +21,12 @@ class ArmySquad(Entity):
     mobility = ManyToOne('SquadMobility')
     equip = ManyToOne('SquadEquip')
     exp = ManyToOne('SquadExp')
+    army = ManyToOne('Army')
     transport = Field(Integer, required=False, default=0)
     support = Field(Boolean, required=False, default=False)
+    transporting = Field(String, required=False, default='') # id,id,id,id
     fields = [id, name, type, mods, casualities, templ, mobility]
-
+    stype = 'Squad'
 
     def calc_all(self):
         modes = self.mods

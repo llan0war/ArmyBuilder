@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'interface.ui'
 #
-# Created: Thu Feb 20 16:11:09 2014
+# Created: Thu Feb 20 18:08:05 2014
 #      by: PyQt4 UI code generator 4.10.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -42,6 +42,10 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2 = QtGui.QHBoxLayout(self.page)
         self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
         self.armylist = QtGui.QTreeWidget(self.page)
+        self.armylist.setAcceptDrops(False)
+        self.armylist.setDragEnabled(True)
+        self.armylist.setDragDropMode(QtGui.QAbstractItemView.InternalMove)
+        self.armylist.setDefaultDropAction(QtCore.Qt.IgnoreAction)
         self.armylist.setAnimated(True)
         self.armylist.setWordWrap(True)
         self.armylist.setObjectName(_fromUtf8("armylist"))
@@ -169,6 +173,7 @@ class Ui_MainWindow(object):
         self.verticalLayout.addWidget(self.templatetable)
         self.toolBox.addItem(self.page_3, _fromUtf8(""))
         self.page_5 = QtGui.QWidget()
+        self.page_5.setGeometry(QtCore.QRect(0, 0, 903, 324))
         self.page_5.setObjectName(_fromUtf8("page_5"))
         self.horizontalLayout_3 = QtGui.QHBoxLayout(self.page_5)
         self.horizontalLayout_3.setObjectName(_fromUtf8("horizontalLayout_3"))
@@ -202,12 +207,15 @@ class Ui_MainWindow(object):
         self.removeaction.setObjectName(_fromUtf8("removeaction"))
         self.updateaction = QtGui.QAction(MainWindow)
         self.updateaction.setObjectName(_fromUtf8("updateaction"))
+        self.saveaction = QtGui.QAction(MainWindow)
+        self.saveaction.setObjectName(_fromUtf8("saveaction"))
         self.toolBar.addAction(self.addaction)
         self.toolBar.addAction(self.removeaction)
         self.toolBar.addAction(self.updateaction)
+        self.toolBar.addAction(self.saveaction)
 
         self.retranslateUi(MainWindow)
-        self.toolBox.setCurrentIndex(1)
+        self.toolBox.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -290,4 +298,5 @@ class Ui_MainWindow(object):
         self.removeaction.setToolTip(_translate("MainWindow", "Удалить ", None))
         self.updateaction.setText(_translate("MainWindow", "Upd", None))
         self.updateaction.setToolTip(_translate("MainWindow", "Update data", None))
+        self.saveaction.setText(_translate("MainWindow", "Save", None))
 

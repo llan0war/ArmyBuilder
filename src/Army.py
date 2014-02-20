@@ -6,7 +6,7 @@ from sqlalchemy import select, func
 class Army(Entity):
 
     using_options(tablename='army')
-    squads = ManyToMany('ArmySquad')
+    squads = OneToMany('ArmySquad')
     name = Field(Unicode, required=True)
     ts = Field(Integer, required=False, default=0)
     id = Field(Integer, autoincrement=True, primary_key=True)
@@ -15,6 +15,7 @@ class Army(Entity):
     supply = Field(Integer, required=False, default=0)
     weight = Field(Integer, required=False, default=0)
     tl = Field(Integer, required=False, default=0)
+    stype = 'Army'
 
     def __repr__(self):
         return 'Army'
@@ -35,13 +36,14 @@ class Army(Entity):
 
     def calcer2(self):
         res = {}
-        res['army'] = [self.name, str(self.id), str(self.ts), str(self.raise_cost), str(self.supply), str(self.weight), str(self.tl), '', '', '']
+        res['army'] = [self.name, str(self.id), self.stype, str(self.ts), str(self.raise_cost), str(self.supply), str(self.weight), str(self.tl), '', '', '']
         res['squads'] = []
         for sq in self.squads:
             tmpsquad = []
             #['Name', 'TS', 'Raise', 'Supply', 'Weight', 'TL', 'Type', 'Mods', 'Casualities']
             tmpsquad.append(sq.name)
             tmpsquad.append(str(sq.id))
+            tmpsquad.append(sq.stype)
             tmpsquad.append(str(int(sq.ts*(100 - sq.casualities)/100 + 0.5)))
             tmpsquad.append(str(int(sq.raise_cost*(100 - sq.casualities)/100 + 0.5)))
             tmpsquad.append(str(int(sq.supply*(100 - sq.casualities)/100 + 0.5)))
@@ -69,4 +71,3 @@ class Army(Entity):
         res = res + '\n'.join(['%s: %s' % (key, val) for key, val in typecoll.iteritems()])
         return res
 
-# {army: [], squads: [[], [], []]}

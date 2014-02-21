@@ -44,8 +44,8 @@ def speed_calcer(mob, tl, hov=False):
         else:
             res = u'%s/%s/%s' % ('0', '0', str(int(160+40*(tl-3))))
     elif mob.name == u'Sea': res = u'%s/%s/%s' % ('0', '0', str(int(160+40*(tl-3))))
-    elif mob.name == u'Fast air': res = u'%s/%s/%s' % ('9999', '9999', '9999')
-    elif mob.name == u'Slow air': res = u'%s/%s/%s' % (str(int(100*(tl-5))), str(int(100*(tl-5))), str(int(100*(tl-5))))
+    elif mob.name == u'Fast air': res = u'Unlimited'
+    elif mob.name == u'Slow air': res = u'%s' % (str(int(100*(tl-5))))
     else: res = u'123/456/789'
     return res
 

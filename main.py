@@ -201,7 +201,7 @@ class MainWindow(QtGui.QMainWindow):
         index = item.text(1)
         if item.text(2) == 'Army':
             changed_item = Army.Army.get_by(id=int(index))
-            self.mainwindow.armyopts.setText(changed_item.typelist())
+            self.mainwindow.armyopts.setText(changed_item.typelist() + changed_item.impetous_fanatics_calcer())
 
     def on_armylist_itemDoubleClicked(self, item):
         pass

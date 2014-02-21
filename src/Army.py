@@ -71,3 +71,16 @@ class Army(Entity):
         res = res + '\n'.join(['%s: %s' % (key, val) for key, val in typecoll.iteritems()])
         return res
 
+    def impetous_fanatics_calcer(self):
+        self.calcer()
+        squad_num = len(self.squads)
+        armts = self.ts
+        fan_num = float((len([sq for sq in self.squads if u'Fanatic' in [md.name for md in sq.mods]])))
+        fan_ts = float((sum([int(sq.ts*(100 - sq.casualities)/100 + 0.5) for sq in self.squads if u'Fanatic' in [md.name for md in sq.mods]])))
+        imp_num = float((len([sq for sq in self.squads if u'Impetuous' in [md.name for md in sq.mods]])))
+        imp_ts = float((sum([int(sq.ts*(100 - sq.casualities)/100 + 0.5) for sq in self.squads if u'Impetuous' in [md.name for md in sq.mods]])))
+        fan_per = max(int((fan_num/squad_num)*100), int((fan_ts/armts)*100))
+        imp_per = max(int((imp_num/squad_num)*100), int((imp_ts/armts)*100))
+        print 'Found %d squads with %d fanatics ts %d of total army ts %d' % (squad_num, fan_num, fan_ts, armts)
+
+        return '\n Fanatics: %d \n Impetous: %d' % (fan_per, imp_per)

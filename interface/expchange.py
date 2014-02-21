@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'expchange.ui'
 #
-# Created: Fri Feb 21 10:56:44 2014
+# Created: Fri Feb 21 11:41:02 2014
 #      by: PyQt4 UI code generator 4.10.3
 #
 # WARNING! All changes made in this file will be lost!

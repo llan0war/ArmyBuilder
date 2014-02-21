@@ -39,6 +39,8 @@ class MainWindow(QtGui.QMainWindow):
         self.mainwindow.armylist.setHeaderItem(QtGui.QTreeWidgetItem(['Name', 'ID', 'SType', 'TS', 'Raise', 'Supply', 'Weight', 'TL', 'Type', 'Mods', 'Casualities', 'Count']))
         self.mainwindow.armylist.setColumnHidden(1, True)
         self.mainwindow.armylist.setColumnHidden(2, True)
+        self.mainwindow.armylist.header().setResizeMode(QtGui.QHeaderView.ResizeToContents)
+        #.setResizeMode(QtGui.QHeaderView.Stretch)
         quer = Army.Army.query.all()
         for cur, templ in enumerate(quer):
             arm = templ.calcer2()
@@ -50,13 +52,6 @@ class MainWindow(QtGui.QMainWindow):
                         lv2 = QtGui.QTreeWidgetItem(adding, sqt['data'])
         self.loaded = True
 
-    def combotempl_constructor(self):
-        box = QtGui.QComboBox()
-        quer = SquadTypes.SquadTypes.query.all()
-        for q in quer:
-            box.addItem(q.name)
-        return box
-
     def fill_squadtable(self):
         self.loaded = False
         self.mainwindow.squadtable.clear()
@@ -64,7 +59,7 @@ class MainWindow(QtGui.QMainWindow):
         for num, dat in enumerate(['ID', 'Name', 'Type', 'Mods', 'Casualities', 'Template', 'Mobility', 'Equip', 'Expirience', u'Количество']):
             self.mainwindow.squadtable.setHorizontalHeaderItem(num, QtGui.QTableWidgetItem(dat))
         self.mainwindow.squadtable.setColumnHidden(0, True)
-        self.mainwindow.squadtable.horizontalHeader().setResizeMode(QtGui.QHeaderView.Stretch)
+        self.mainwindow.squadtable.horizontalHeader().setResizeMode(QtGui.QHeaderView.ResizeToContents)
         quer = ArmySquad.ArmySquad.query.all()
         self.mainwindow.squadtable.setRowCount(len(quer))
 
@@ -84,7 +79,7 @@ class MainWindow(QtGui.QMainWindow):
         for num, dat in enumerate(['ID', 'Name', 'TS', 'Raise', 'Supply', 'Weight', 'TL']):
             self.mainwindow.modstable.setHorizontalHeaderItem(num, QtGui.QTableWidgetItem(dat))
         self.mainwindow.modstable.setColumnHidden(0, True)
-        self.mainwindow.modstable.horizontalHeader().setResizeMode(QtGui.QHeaderView.Stretch)
+        self.mainwindow.modstable.horizontalHeader().setResizeMode(QtGui.QHeaderView.ResizeToContents)
         quer = SquadMods.SquadMods.query.all()
         self.mainwindow.modstable.setRowCount(len(quer))
         for cur, templ in enumerate(quer):
@@ -101,7 +96,7 @@ class MainWindow(QtGui.QMainWindow):
         for num, dat in enumerate(['ID', 'Type']):
             self.mainwindow.typetable.setHorizontalHeaderItem(num, QtGui.QTableWidgetItem(dat))
         self.mainwindow.typetable.setColumnHidden(0, True)
-        self.mainwindow.typetable.horizontalHeader().setResizeMode(QtGui.QHeaderView.Stretch)
+        self.mainwindow.typetable.horizontalHeader().setResizeMode(QtGui.QHeaderView.ResizeToContents)
         quer = SquadTypes.SquadTypes.query.all()
         self.mainwindow.typetable.setRowCount(len(quer))
 
@@ -133,7 +128,7 @@ class MainWindow(QtGui.QMainWindow):
         for num, dat in enumerate(['ID', 'Name', 'TS', 'Raise', 'Supply', 'Weight', 'TL', 'Type', 'Mobility', u'Скорость', u'Грузоподьемность', 'Support']):
             self.mainwindow.templatetable.setHorizontalHeaderItem(num, QtGui.QTableWidgetItem(dat))
         self.mainwindow.templatetable.setColumnHidden(0, True)
-        self.mainwindow.templatetable.horizontalHeader().setResizeMode(QtGui.QHeaderView.Stretch)
+        self.mainwindow.templatetable.horizontalHeader().setResizeMode(QtGui.QHeaderView.ResizeToContents)
         quer = SquadTemplate.SquadTemplate.query.all()
         self.mainwindow.templatetable.setRowCount(len(quer))
         for cur, templ in enumerate(quer):
@@ -219,6 +214,13 @@ class MainWindow(QtGui.QMainWindow):
             changed_item = ArmySquad.ArmySquad.get_by(id=int(item.text(1)))
             dlg = SquadMod(self, arm=changed_item.army, item=changed_item)
             if dlg.exec_():
+                self.load_data()
+        elif item.text(2) == 'Army':
+            changed_item = Army.Army.get_by(id=int(item.text(1)))
+            newname, ok = QtGui.QInputDialog.getText(self, 'New name', 'Enter new army name')
+            if ok:
+                changed_item.name = str(newname).decode('utf-8')
+                core.saveData()
                 self.load_data()
 
     def on_squadtable_itemChanged(self, item):

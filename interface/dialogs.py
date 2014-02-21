@@ -52,9 +52,9 @@ class ModsChange(QtGui.QDialog):
         QtGui.QDialog.__init__(self, parent)
         self.typedialog = Ui_TypeChange()
         self.typedialog.setupUi(self)
-        self.fill_types(mods)
         self.res = 0
         self.item = item
+        self.fill_types(mods)
 
     def fill_types(self, types):
         self.typedialog.typeview.clear()
@@ -63,11 +63,19 @@ class ModsChange(QtGui.QDialog):
         quer = SquadMods.SquadMods.query.all()
         for cur, templ in enumerate(quer):
             fields = [str(templ.id), templ.name, str(templ.ts), str(templ.raise_cost), str(templ.supply), str(templ.weight), str(templ.tl)]
-            root = QtGui.QTreeWidgetItem(self.typedialog.typeview, fields)
-            if templ.id in types:
-                root.setCheckState(1, QtCore.Qt.Checked)
+            if templ.name == 'Hovercraft':
+                if self.item.mobility.name in [u'Motorized', u'Coast'] and self.item.tl > 7:
+                    root = QtGui.QTreeWidgetItem(self.typedialog.typeview, fields)
+                    if templ.id in types:
+                        root.setCheckState(1, QtCore.Qt.Checked)
+                    else:
+                        root.setCheckState(1, QtCore.Qt.Unchecked)
             else:
-                root.setCheckState(1, QtCore.Qt.Unchecked)
+                root = QtGui.QTreeWidgetItem(self.typedialog.typeview, fields)
+                if templ.id in types:
+                    root.setCheckState(1, QtCore.Qt.Checked)
+                else:
+                    root.setCheckState(1, QtCore.Qt.Unchecked)
 
     def accept(self):
         root = self.typedialog.typeview.invisibleRootItem()
@@ -162,8 +170,7 @@ class MobilityChanger(QtGui.QDialog):
         if type(ite) == type(1):
             item = self.typedialog.moblist.currentText()
             res = SquadMobility.SquadMobility.get_by(id=int(item.split(':')[0]))
-            self.typedialog.label.setText(core.speed_calcer(res, self.tl))
-
+            self.typedialog.label.setText(core.speed_calcer(res, self.tl, (True if u'Hovercraft' in [nm.name for nm in self.item.mods] else False)))
 
 class EquipChanger(QtGui.QDialog):
     def __init__(self, parent=None, eq=None, item=None):

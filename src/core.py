@@ -10,11 +10,14 @@ dbfile = os.path.join(dbdir, "army.sqlite")
 saveData = None
 
 def calc_all():
+    quer = SquadTemplate.SquadTemplate.query.all()
+    for cur, templ in enumerate(quer):
+        templ.speed = speed_calcer(templ.mobility, templ.tl)
     quer = ArmySquad.ArmySquad.query.all()
     emptysq = []
     for cur, templ in enumerate(quer):
         templ.calc_all()
-        templ.speed = speed_calcer(templ.mobility, templ.tl)
+        templ.speed = speed_calcer(templ.mobility, templ.tl, (True if u'Hovercraft' in [nm.name for nm in templ.mods] else False))
         if not templ.army:
             emptysq.append(templ)
     freearm = Army.Army.get_by(name=u'Free units')
@@ -22,20 +25,24 @@ def calc_all():
     quer = Army.Army.query.all()
     for cur, templ in enumerate(quer):
         templ.calcer()
-    quer = SquadTemplate.SquadTemplate.query.all()
-    for cur, templ in enumerate(quer):
-        templ.speed = speed_calcer(templ.mobility, templ.tl)
     saveData()
 
 
-def speed_calcer(mob, tl):
+def speed_calcer(mob, tl, hov=False):
     if mob.name == u'Foot': res = u'%s/%s/%s' % ('20', '10', '0')
     elif mob.name == u'Mount': res = u'%s/%s/%s' % ('30', '15', '0')
     elif mob.name == u'Mechanized': res = u'%s/%s/%s' % (str(int(80+20*(tl-6))), str(int(60+15*(tl-6))), '0')
-    elif mob.name == u'Motorized': res = u'%s/%s/%s' % (str(int(120+30*(tl-6))), str(int(20+5*(tl-6))), '0')
+    elif mob.name == u'Motorized':
+        if hov:
+            res = u'%s/%s/%s' % (str(int(80+20*(tl-6))), str(int(60+15*(tl-6))), str(int(160+40*(tl-3))))
+        else:
+            res = u'%s/%s/%s' % (str(int(120+30*(tl-6))), str(int(20+5*(tl-6))), '0')
     elif mob.name == u'Immovable': res = u'%s/%s/%s' % ('0', '0', '0')
-
-    elif mob.name == u'Coast': res = u'%s/%s/%s' % ('0', '0', str(int(160+40*(tl-3))))
+    elif mob.name == u'Coast':
+        if hov:
+            res = u'%s/%s/%s' % (str(int((80+20*(tl-6))), str(int(60+15*(tl-6))), str(int(160+40*(tl-3)))))
+        else:
+            res = u'%s/%s/%s' % ('0', '0', str(int(160+40*(tl-3))))
     elif mob.name == u'Sea': res = u'%s/%s/%s' % ('0', '0', str(int(160+40*(tl-3))))
     elif mob.name == u'Fast air': res = u'%s/%s/%s' % ('9999', '9999', '9999')
     elif mob.name == u'Slow air': res = u'%s/%s/%s' % (str(int(100*(tl-5))), str(int(100*(tl-5))), str(int(100*(tl-5))))
@@ -155,6 +162,11 @@ def sampleArmy():
     templ52 = SquadTemplate.SquadTemplate(name=u'Ogres', mobility=Foot, type=[], raise_cost=80, supply=8, weight=4, tl=0, ts=8, support=False)
     hero = SquadMods.SquadMods(name=u'Hero', ts=100, raise_cost=100, supply=100)
     child = SquadMods.SquadMods(name=u'Child', ts=-50, raise_cost=-50, supply=-50)
+    Fanatic = SquadMods.SquadMods(name=u'Fanatic')
+    Flagship = SquadMods.SquadMods(name=u'Flagship')
+    Hovercraft = SquadMods.SquadMods(name=u'Hovercraft')
+    SuperSoldier = SquadMods.SquadMods(name=u'Super-Soldier')
+    Impetuous = SquadMods.SquadMods(name=u'Impetuous')
     squad1 = ArmySquad.ArmySquad(name=u'Applejack', templ=templ99, mods=[hero], equip=eq4, exp=exp1)
     squad2 = ArmySquad.ArmySquad(name=u'Rarity', templ=templ98, equip=eq4, exp=exp1)
     squad3 = ArmySquad.ArmySquad(name=u'Fluttershy', templ=templ97, mods=[child], equip=eq4, exp=exp1)

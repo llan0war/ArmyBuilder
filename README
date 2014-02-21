@@ -16,6 +16,7 @@ Source and Modifications
  Feel free to request changes, report bugs and so on
  If you want to launch ArmyBuilder from source code, you need python 2.7, PyQt 4.8, SQLAlchemy 0.9.1 and Elixir 0.7.1, but remember make changes in alchemy as described there http://stackoverflow.com/questions/14201210/impossible-to-initialize-elixir
  Also you can change an UI, both interface and dialogs stored in 'interface' folder. You can use QTDesigner to modify *.ui files and use interface_gen.cmd to convert it into .py classes
+ And please - don't say me that my code is scaring, i'm know, its first time i'm using alchemy+qt
 
 Compiling
  Assembling project to *.exe really simple, you need install py2exe and run 'pytnon -u setup.py py2exe'. Result will be stored at 'dist' folder

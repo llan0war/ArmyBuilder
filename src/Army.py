@@ -40,12 +40,13 @@ class Army(Entity):
         res['army'] = [self.name, str(self.id), self.stype, str(self.ts), str(self.raise_cost), str(self.supply), str(self.weight), str(self.tl), '', '', '']
         res['squads'] = []
         for sq in self.squads:
-            print (sq.transported)
-            tmpsquad = self.squad_data(sq)
-            res['squads'].append(tmpsquad)
+            if not sq.transported:
+                tmpsquad = self.squad_data(sq)
+                res['squads'].append(tmpsquad)
         return res
 
     def squad_data(self, sq):
+        res_sq = {}
         tmpsquad = []
         tmpsquad.append(sq.name)
         tmpsquad.append(str(sq.id))
@@ -62,7 +63,9 @@ class Army(Entity):
         if len(sq.transporting) > 0:
             for passenger in sq.transporting:
                 trans.append(self.squad_data(passenger))
-        return tmpsquad
+        res_sq['data'] = tmpsquad
+        res_sq['transporting'] = trans
+        return res_sq
 
     def typelist(self):
         typecoll = {}
@@ -77,14 +80,13 @@ class Army(Entity):
 
     def impetous_fanatics_calcer(self):
         self.calcer()
-        squad_num = len(self.squads)
+        squad_num = sum([sq.count for sq in self.squads])
         armts = self.ts
-        print squad_num, armts
         if squad_num == 0 or armts == 0:
             return '\n Fanatics: %d \n Impetous: %d' % (0, 0)
-        fan_num = float((len([sq for sq in self.squads if u'Fanatic' in [md.name for md in sq.mods]])))
+        fan_num = float((sum([sq.count for sq in self.squads if u'Fanatic' in [md.name for md in sq.mods]])))
         fan_ts = float((sum([int(sq.ts*(100 - sq.casualities)/100 + 0.5) for sq in self.squads if u'Fanatic' in [md.name for md in sq.mods]])))
-        imp_num = float((len([sq for sq in self.squads if u'Impetuous' in [md.name for md in sq.mods]])))
+        imp_num = float((sum([sq.count for sq in self.squads if u'Impetuous' in [md.name for md in sq.mods]])))
         imp_ts = float((sum([int(sq.ts*(100 - sq.casualities)/100 + 0.5) for sq in self.squads if u'Impetuous' in [md.name for md in sq.mods]])))
         fan_per = max(int((fan_num/squad_num)*100), int((fan_ts/armts)*100))
         imp_per = max(int((imp_num/squad_num)*100), int((imp_ts/armts)*100))

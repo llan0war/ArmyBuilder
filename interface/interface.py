@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'interface.ui'
 #
-# Created: Fri Feb 21 15:18:48 2014
+# Created: Fri Feb 21 16:40:30 2014
 #      by: PyQt4 UI code generator 4.10.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -136,6 +136,7 @@ class Ui_MainWindow(object):
         self.modstable.setHorizontalHeaderItem(5, item)
         item = QtGui.QTableWidgetItem()
         self.modstable.setHorizontalHeaderItem(6, item)
+        self.modstable.horizontalHeader().setCascadingSectionResizes(True)
         self.verticalLayout_2.addWidget(self.modstable)
         self.toolBox.addItem(self.page_4, _fromUtf8(""))
         self.page_3 = QtGui.QWidget()
@@ -215,7 +216,7 @@ class Ui_MainWindow(object):
         self.toolBar.addAction(self.saveaction)
 
         self.retranslateUi(MainWindow)
-        self.toolBox.setCurrentIndex(0)
+        self.toolBox.setCurrentIndex(3)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -230,6 +231,7 @@ class Ui_MainWindow(object):
         self.armylist.headerItem().setText(8, _translate("MainWindow", "Casualities", None))
         self.armyopts.setText(_translate("MainWindow", "Свойства Армий", None))
         self.toolBox.setItemText(self.toolBox.indexOf(self.page), _translate("MainWindow", "Армии", None))
+        self.squadtable.setSortingEnabled(True)
         item = self.squadtable.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "ID", None))
         item = self.squadtable.horizontalHeaderItem(1)
@@ -244,8 +246,9 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "Template", None))
         item = self.squadtable.horizontalHeaderItem(6)
         item.setText(_translate("MainWindow", "Mobility", None))
-        self.squadopts.setText(_translate("MainWindow", "TextLabel", None))
+        self.squadopts.setText(_translate("MainWindow", "Свойства отряда", None))
         self.toolBox.setItemText(self.toolBox.indexOf(self.page_2), _translate("MainWindow", "Отряды", None))
+        self.modstable.setSortingEnabled(True)
         item = self.modstable.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "ID", None))
         item = self.modstable.horizontalHeaderItem(1)
@@ -261,6 +264,7 @@ class Ui_MainWindow(object):
         item = self.modstable.horizontalHeaderItem(6)
         item.setText(_translate("MainWindow", "TL", None))
         self.toolBox.setItemText(self.toolBox.indexOf(self.page_4), _translate("MainWindow", "Модификаторы", None))
+        self.templatetable.setSortingEnabled(True)
         item = self.templatetable.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "ID", None))
         item = self.templatetable.horizontalHeaderItem(1)

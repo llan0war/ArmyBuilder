@@ -36,7 +36,7 @@
     <item>
      <widget class="QToolBox" name="toolBox">
       <property name="currentIndex">
-       <number>0</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="page">
        <property name="geometry">
@@ -204,6 +204,9 @@
        <layout class="QHBoxLayout" name="horizontalLayout_4">
         <item>
          <widget class="QTableWidget" name="squadtable">
+          <property name="sortingEnabled">
+           <bool>true</bool>
+          </property>
           <column>
            <property name="text">
             <string>ID</string>
@@ -268,7 +271,7 @@
            </size>
           </property>
           <property name="text">
-           <string>TextLabel</string>
+           <string>Свойства отряда</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -292,6 +295,12 @@
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
          <widget class="QTableWidget" name="modstable">
+          <property name="sortingEnabled">
+           <bool>true</bool>
+          </property>
+          <attribute name="horizontalHeaderCascadingSectionResizes">
+           <bool>true</bool>
+          </attribute>
           <column>
            <property name="text">
             <string>ID</string>
@@ -351,6 +360,9 @@
          <widget class="QTableWidget" name="templatetable">
           <property name="editTriggers">
            <set>QAbstractItemView::AnyKeyPressed|QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed</set>
+          </property>
+          <property name="sortingEnabled">
+           <bool>true</bool>
           </property>
           <attribute name="horizontalHeaderCascadingSectionResizes">
            <bool>true</bool>

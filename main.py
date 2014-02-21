@@ -42,9 +42,13 @@ class MainWindow(QtGui.QMainWindow):
         quer = Army.Army.query.all()
         for cur, templ in enumerate(quer):
             arm = templ.calcer2()
+            print arm
             root = QtGui.QTreeWidgetItem(self.mainwindow.armylist, arm['army'])
             for squad in arm['squads']:
-                adding = QtGui.QTreeWidgetItem(root, squad)
+                adding = QtGui.QTreeWidgetItem(root, squad['data'])
+                if len(squad['transporting']) > 0:
+                    for sqt in squad['transporting']:
+                        lv2 = QtGui.QTreeWidgetItem(adding, sqt['data'])
         self.loaded = True
 
     def combotempl_constructor(self):
@@ -57,8 +61,8 @@ class MainWindow(QtGui.QMainWindow):
     def fill_squadtable(self):
         self.loaded = False
         self.mainwindow.squadtable.clear()
-        self.mainwindow.squadtable.setColumnCount(9)
-        for num, dat in enumerate(['ID', 'Name', 'Type', 'Mods', 'Casualities', 'Template', 'Mobility', 'Equip', 'Expirience']):
+        self.mainwindow.squadtable.setColumnCount(10)
+        for num, dat in enumerate(['ID', 'Name', 'Type', 'Mods', 'Casualities', 'Template', 'Mobility', 'Equip', 'Expirience', u'Количество']):
             self.mainwindow.squadtable.setHorizontalHeaderItem(num, QtGui.QTableWidgetItem(dat))
         self.mainwindow.squadtable.setColumnHidden(0, True)
         quer = ArmySquad.ArmySquad.query.all()
@@ -70,7 +74,7 @@ class MainWindow(QtGui.QMainWindow):
             item.templ = templ
             for num, dat in enumerate(fields):
                 res = QtGui.QTableWidgetItem(dat)
-                if not num in [1, 4]: res.setFlags(QtCore.Qt.ItemIsEnabled)
+                if not num in [1, 4, 9]: res.setFlags(QtCore.Qt.ItemIsEnabled)
                 self.mainwindow.squadtable.setItem(cur, num, res)
         self.loaded = True
 
@@ -193,14 +197,19 @@ class MainWindow(QtGui.QMainWindow):
             changed_item = SquadTemplate.SquadTemplate.get_by(id=int(self.mainwindow.templatetable.item(item.row(), 0).text()))
             setattr(changed_item, changed_item.fields[item.column()].name, str(item.text()).decode('utf-8'))
             core.saveData()
+            self.load_data()
+
 
     def on_armylist_itemClicked(self, item):
-        while item.parent():
-            item = item.parent()
-        index = item.text(1)
+        #while item.parent():
+        #    item = item.parent()
+        #index = item.text(1)
         if item.text(2) == 'Army':
-            changed_item = Army.Army.get_by(id=int(index))
+            changed_item = Army.Army.get_by(id=int(item.text(1)))
             self.mainwindow.armyopts.setText(changed_item.typelist() + changed_item.impetous_fanatics_calcer())
+        elif item.text(2) == 'Squad':
+            changed_item = ArmySquad.ArmySquad.get_by(id=int(item.text(1)))
+            self.mainwindow.armyopts.setText(changed_item.typelist())
 
     def on_armylist_itemDoubleClicked(self, item):
         if item.text(2) == 'Squad':
@@ -214,18 +223,21 @@ class MainWindow(QtGui.QMainWindow):
             changed_item = ArmySquad.ArmySquad.get_by(id=int(self.mainwindow.squadtable.item(item.row(), 0).text()))
             setattr(changed_item, changed_item.fields[item.column()].name, str(item.text()).decode('utf-8'))
             core.saveData()
+            self.load_data()
 
     def on_modstable_itemChanged(self, item):
         if self.loaded:
             changed_item = SquadMods.SquadMods.get_by(id=int(self.mainwindow.modstable.item(item.row(), 0).text()))
             setattr(changed_item, changed_item.fields[item.column()].name, str(item.text()).decode('utf-8'))
             core.saveData()
+            self.load_data()
 
     def on_typetable_itemChanged(self, item):
         if self.loaded:
             changed_item = SquadTypes.SquadTypes.get_by(id=int(self.mainwindow.typetable.item(item.row(), 0).text()))
             setattr(changed_item, changed_item.fields[item.column()].name, str(item.text()).decode('utf-8'))
             core.saveData()
+            self.load_data()
 
     def on_updateaction_triggered(self, foo=True):
         if not foo:
@@ -237,9 +249,11 @@ class MainWindow(QtGui.QMainWindow):
             if curr_view == 1:
                 #print SquadTemplate.SquadTemplate.query.first()
                 newsquad = ArmySquad.ArmySquad(name=u'new', templ=SquadTemplate.SquadTemplate.query.first(),
-                                               equip=SquadEquip.SquadEquip.query.first(),
+                                               equip=SquadEquip.SquadEquip.get_by(name=u'Basic'),
                                                mobility=SquadMobility.SquadMobility.query.first(),
-                                               exp=SquadExp.SquadExp.query.first())
+                                               exp=SquadExp.SquadExp.get_by(name=u'Average'))
+                dlg = TemplChange(self, templ=newsquad.templ, item=newsquad)
+                dlg.exec_()
                 core.saveData()
                 self.load_data()
             if curr_view == 2:
@@ -309,7 +323,12 @@ class MainWindow(QtGui.QMainWindow):
                     if item.text(2) == 'Army':
                         cur_army = Army.Army.get_by(id=int(item.text(1)))
                         #squads_num = item.childCount()
-                        squads = [ArmySquad.ArmySquad.get_by(id=int(item.child(sq).text(1))) for sq in range(item.childCount())]
+                        squads = []
+                        for sq in range(item.childCount()):
+                            if item.child(sq).childCount() > 0:
+                                for j in range(item.child(sq).childCount()):
+                                    squads.append(ArmySquad.ArmySquad.get_by(id=int(item.child(sq).child(j).text(1))))
+                            squads.append(ArmySquad.ArmySquad.get_by(id=int(item.child(sq).text(1))))
                         cur_army.squads = squads
             core.saveData()
             self.load_data()

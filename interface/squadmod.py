@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'squadmod.ui'
 #
-# Created: Fri Feb 21 16:40:31 2014
+# Created: Fri Feb 21 16:52:47 2014
 #      by: PyQt4 UI code generator 4.10.3
 #
 # WARNING! All changes made in this file will be lost!

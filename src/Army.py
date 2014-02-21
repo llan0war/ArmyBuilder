@@ -59,6 +59,7 @@ class Army(Entity):
         tmpsquad.append(','.join([t.name for t in sq.type]))
         tmpsquad.append(','.join([t.name for t in sq.mods]))
         tmpsquad.append(str(int(sq.casualities)))
+        tmpsquad.append(str(int(sq.count)))
         trans = []
         if len(sq.transporting) > 0:
             for passenger in sq.transporting:

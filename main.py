@@ -36,13 +36,12 @@ class MainWindow(QtGui.QMainWindow):
     def fill_armytree(self):
         self.loaded = False
         self.mainwindow.armylist.clear()
-        self.mainwindow.armylist.setHeaderItem(QtGui.QTreeWidgetItem(['Name', 'ID', 'SType', 'TS', 'Raise', 'Supply', 'Weight', 'TL', 'Type', 'Mods', 'Casualities']))
+        self.mainwindow.armylist.setHeaderItem(QtGui.QTreeWidgetItem(['Name', 'ID', 'SType', 'TS', 'Raise', 'Supply', 'Weight', 'TL', 'Type', 'Mods', 'Casualities', 'Count']))
         self.mainwindow.armylist.setColumnHidden(1, True)
         self.mainwindow.armylist.setColumnHidden(2, True)
         quer = Army.Army.query.all()
         for cur, templ in enumerate(quer):
             arm = templ.calcer2()
-            print arm
             root = QtGui.QTreeWidgetItem(self.mainwindow.armylist, arm['army'])
             for squad in arm['squads']:
                 adding = QtGui.QTreeWidgetItem(root, squad['data'])
@@ -65,6 +64,7 @@ class MainWindow(QtGui.QMainWindow):
         for num, dat in enumerate(['ID', 'Name', 'Type', 'Mods', 'Casualities', 'Template', 'Mobility', 'Equip', 'Expirience', u'Количество']):
             self.mainwindow.squadtable.setHorizontalHeaderItem(num, QtGui.QTableWidgetItem(dat))
         self.mainwindow.squadtable.setColumnHidden(0, True)
+        self.mainwindow.squadtable.horizontalHeader().setResizeMode(QtGui.QHeaderView.Stretch)
         quer = ArmySquad.ArmySquad.query.all()
         self.mainwindow.squadtable.setRowCount(len(quer))
 
@@ -84,6 +84,7 @@ class MainWindow(QtGui.QMainWindow):
         for num, dat in enumerate(['ID', 'Name', 'TS', 'Raise', 'Supply', 'Weight', 'TL']):
             self.mainwindow.modstable.setHorizontalHeaderItem(num, QtGui.QTableWidgetItem(dat))
         self.mainwindow.modstable.setColumnHidden(0, True)
+        self.mainwindow.modstable.horizontalHeader().setResizeMode(QtGui.QHeaderView.Stretch)
         quer = SquadMods.SquadMods.query.all()
         self.mainwindow.modstable.setRowCount(len(quer))
         for cur, templ in enumerate(quer):
@@ -100,6 +101,7 @@ class MainWindow(QtGui.QMainWindow):
         for num, dat in enumerate(['ID', 'Type']):
             self.mainwindow.typetable.setHorizontalHeaderItem(num, QtGui.QTableWidgetItem(dat))
         self.mainwindow.typetable.setColumnHidden(0, True)
+        self.mainwindow.typetable.horizontalHeader().setResizeMode(QtGui.QHeaderView.Stretch)
         quer = SquadTypes.SquadTypes.query.all()
         self.mainwindow.typetable.setRowCount(len(quer))
 
@@ -131,6 +133,7 @@ class MainWindow(QtGui.QMainWindow):
         for num, dat in enumerate(['ID', 'Name', 'TS', 'Raise', 'Supply', 'Weight', 'TL', 'Type', 'Mobility', u'Скорость', u'Грузоподьемность', 'Support']):
             self.mainwindow.templatetable.setHorizontalHeaderItem(num, QtGui.QTableWidgetItem(dat))
         self.mainwindow.templatetable.setColumnHidden(0, True)
+        self.mainwindow.templatetable.horizontalHeader().setResizeMode(QtGui.QHeaderView.Stretch)
         quer = SquadTemplate.SquadTemplate.query.all()
         self.mainwindow.templatetable.setRowCount(len(quer))
         for cur, templ in enumerate(quer):

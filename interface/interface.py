@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'interface.ui'
 #
-# Created: Fri Feb 21 16:40:30 2014
+# Created: Fri Feb 21 16:52:46 2014
 #      by: PyQt4 UI code generator 4.10.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -171,6 +171,8 @@ class Ui_MainWindow(object):
         item = QtGui.QTableWidgetItem()
         self.templatetable.setHorizontalHeaderItem(9, item)
         self.templatetable.horizontalHeader().setCascadingSectionResizes(True)
+        self.templatetable.horizontalHeader().setStretchLastSection(True)
+        self.templatetable.verticalHeader().setStretchLastSection(True)
         self.verticalLayout.addWidget(self.templatetable)
         self.toolBox.addItem(self.page_3, _fromUtf8(""))
         self.page_5 = QtGui.QWidget()

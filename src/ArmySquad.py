@@ -70,7 +70,10 @@ class ArmySquad(Entity):
     def typelist(self):
         supp = ''
         if self.support:
-            supp = ' \n Support'
-        res = 'Squad: %s \n TS: %s \n Raise Cost: %s \n Weight: %s \n TL: %s \n Supply: %s \n Speed: %s \n Transport: %s \n Army: %s' % \
+            supp = ' \n Support \n'
+        res = 'Squad: %s \n TS: %s \n Raise Cost: %s \n Weight: %s \n TL: %s \n Supply: %s \n Speed: %s \n Transport: %s \n Army: %s \n' % \
               (self.name, str(self.ts), str(self.raise_cost), str(self.weight), str(self.tl), str(self.supply), self.speed, self.transport, self.army.name)
-        return res + supp
+        res = res + supp
+        res = res + '\n '.join(['%s: %s' % (md.name, md.comment) for md in self.mods if len(md.comment) > 0])
+        res = res + '\n %s: %s' % (self.mobility.name, self.mobility.comment)
+        return res

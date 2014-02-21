@@ -76,16 +76,17 @@ class MainWindow(QtGui.QMainWindow):
     def fill_modstable(self):
         self.loaded = False
         self.mainwindow.modstable.clear()
-        for num, dat in enumerate(['ID', 'Name', 'TS', 'Raise', 'Supply', 'Weight', 'TL']):
+        self.mainwindow.modstable.setColumnCount(8)
+        for num, dat in enumerate(['ID', 'Name', 'TS', 'Raise', 'Supply', 'Weight', 'TL', 'Comment']):
             self.mainwindow.modstable.setHorizontalHeaderItem(num, QtGui.QTableWidgetItem(dat))
         self.mainwindow.modstable.setColumnHidden(0, True)
         self.mainwindow.modstable.horizontalHeader().setResizeMode(QtGui.QHeaderView.ResizeToContents)
         quer = SquadMods.SquadMods.query.all()
         self.mainwindow.modstable.setRowCount(len(quer))
         for cur, templ in enumerate(quer):
-            fields = [str(templ.id), templ.name, str(templ.ts), str(templ.raise_cost), str(templ.supply), str(templ.weight), str(templ.tl)]
-            item = QtGui.QTreeWidgetItem(fields)
-            item.templ = templ
+            fields = [str(templ.id), templ.name, str(templ.ts), str(templ.raise_cost), str(templ.supply), str(templ.weight), str(templ.tl), str(templ.comment)]
+            #item = QtGui.QTreeWidgetItem(fields)
+            #item.templ = templ
             for num, dat in enumerate(fields):
                 self.mainwindow.modstable.setItem(cur, num, QtGui.QTableWidgetItem(dat))
         self.loaded = True
@@ -105,9 +106,9 @@ class MainWindow(QtGui.QMainWindow):
             item = QtGui.QTreeWidgetItem(fields)
             for num, dat in enumerate(fields):
                 self.mainwindow.typetable.setItem(cur, num, QtGui.QTableWidgetItem(dat))
-
         self.mainwindow.mobilitytable.clear()
-        for num, dat in enumerate(['ID', 'Mobility']):
+        self.mainwindow.mobilitytable.setColumnCount(3)
+        for num, dat in enumerate(['ID', 'Mobility', 'Comment']):
             self.mainwindow.mobilitytable.setHorizontalHeaderItem(num, QtGui.QTableWidgetItem(dat))
         self.mainwindow.mobilitytable.setColumnHidden(0, True)
         quer = SquadMobility.SquadMobility.query.all()
@@ -197,14 +198,13 @@ class MainWindow(QtGui.QMainWindow):
             core.saveData()
             self.load_data()
 
-
     def on_armylist_itemClicked(self, item):
         #while item.parent():
         #    item = item.parent()
         #index = item.text(1)
         if item.text(2) == 'Army':
             changed_item = Army.Army.get_by(id=int(item.text(1)))
-            self.mainwindow.armyopts.setText(changed_item.typelist() + changed_item.impetous_fanatics_calcer())
+            self.mainwindow.armyopts.setText(changed_item.typelist())
         elif item.text(2) == 'Squad':
             changed_item = ArmySquad.ArmySquad.get_by(id=int(item.text(1)))
             self.mainwindow.armyopts.setText(changed_item.typelist())

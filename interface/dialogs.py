@@ -251,7 +251,7 @@ class SquadMod(QtGui.QDialog):
     def fill_types(self):
         self.typedialog.casualities.setValue(self.item.casualities)
         self.typedialog.transportlist.clear()
-        list = ['%d: %s(free %d)' % (int(tr), self.trans[tr]['name'],self.trans[tr]['free']) for tr in self.trans.iterkeys() if (self.trans[tr]['free'] > self.item.weight) and not self.item.id == tr]
+        list = ['%d: %s(free %d)' % (int(tr), self.trans[tr]['name'], self.trans[tr]['free']) for tr in self.trans.iterkeys() if (self.trans[tr]['free'] >= self.item.weight) and not self.item.id == tr]
         list.append('None')
         self.typedialog.transportlist.addItems(list)
 

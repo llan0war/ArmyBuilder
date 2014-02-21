@@ -13,7 +13,8 @@ class SquadMods(Entity):
     weight = Field(Integer, required=False, default=0)
     tl = Field(Integer, required=False, default=0)
     squads = ManyToMany('ArmySquad')
-    fields = [id, name, ts, raise_cost, supply, weight, tl]
+    comment = Field(Text, required=False, default='')
+    fields = [id, name, ts, raise_cost, supply, weight, tl, comment]
 
     def __repr__(self):
         return 'Mod %s with %s' % (self.name, self.effect)

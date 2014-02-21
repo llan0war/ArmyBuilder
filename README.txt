@@ -1,0 +1,28 @@
+This is a small utility to control an army in GURPS-based settings.
+
+Current translation status - finished and not started (but feel free to ask custom translations)
+
+Main controls - toolbar with buttons (+) (-) (Upd) (Save)
+ (+) need to add a new value in current view
+ (-) removes an selected value\values
+ (Upd) reloads data from DB
+ (Save) need to save squad movings between armys.
+
+DB - main database stored in 'db' folder at place, where main.exe launched. Its used simple sqlite model, and if you need you can modify it with any sql compatible software
+ !!!IMPORTANT please, periodically make a DB backup
+
+Source and Modifications
+ Source code, written on python 2.7 stored at GitHub https://github.com/llan0war/ArmyBuilder
+ Feel free to request changes, report bugs and so on
+ If you want to launch ArmyBuilder from source code, you need python 2.7, PyQt 4.8, SQLAlchemy 0.9.1 and Elixir 0.7.1, but remember make changes in alchemy as described there http://stackoverflow.com/questions/14201210/impossible-to-initialize-elixir
+ Also you can change an UI, both interface and dialogs stored in 'interface' folder. You can use QTDesigner to modify *.ui files and use interface_gen.cmd to convert it into .py classes
+
+Compiling
+ Assembling project to *.exe really simple, you need install py2exe and run 'pytnon -u setup.py py2exe'. Result will be stored at 'dist' folder
+
+Contacts and Credits
+ Big thanks to Ракшас the Tiger for idea, support and technical notes
+ Many thanks to all people on stackoverflow.com for their answers
+ About developing process you can read at llan.name
+ And finally - my mail me@llan.name
+ 

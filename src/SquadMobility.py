@@ -10,7 +10,7 @@ class SquadMobility(Entity):
     comment = Field(Text, required=False, default='')
     squads = OneToMany('ArmySquad')
     templ = OneToMany('SquadTemplate')
-    fields = [id, name]
+    fields = [id, name, comment]
 
     def __repr__(self):
         return 'Mobility %s' % self.name

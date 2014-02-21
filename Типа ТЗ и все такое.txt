@@ -1,30 +1,30 @@
 Шаблон войска: 
 Название, 
 Ts, raise, supply, weight, tl, 
-Тип (необязателен, может быть много), 
-Mobility (обязательно, должен быть 1) 
-Скорость (вычисляется из mobility и TL) 
-Support (да/нет. Если да - TS отряда не учитывается в TS армии, но учитывается в Свойствах армии)
-Транспорт
++Тип (необязателен, может быть много), 
++Mobility (обязательно, должен быть 1) 
++Скорость (вычисляется из mobility и TL) 
++Support (да/нет. Если да - TS отряда не учитывается в TS армии, но учитывается в Свойствах армии)
++Транспорт
 
-Отряд:
++Отряд: 
 Шаблон
 Снаряжение 
 Опыт
 Модификаторы
 
-Снаряжение:
-Very Fine
-Fine
-Good
-Basic
-Poor
++Снаряжение: (TS/Raise/Supply)
+Very Fine (150/200/150)
+Fine (100/100/100)
+Good (50/50/50)
+Basic (0/0/0)
+Poor (-25/-25/-25)
 
-Опыт:
-Elite
-Good
-Average
-Inferior
++Опыт: (TS/Raise/Supply)
+Elite (100/200/40)
+Good (50/100/20)
+Average (0/0/0)
+Inferior (-50/-50/-50)
 
 +Тип:
 Cavalery
@@ -37,7 +37,7 @@ C3I
 Engeneering
 Fire
 
-Транспорт - вес, который юнит может везти на себе
++Транспорт - вес, который юнит может везти на себе
 Transport (число) 
 
 +Mobility: Speed(road/off-road/water)
@@ -51,26 +51,86 @@ Motorized: (120+(30*TL-6)/20+(5*TL-6)/0)
 Coast: (0/0/160+(40*TL-3))
 Sea: (0/0/160+(40*TL-3))
 Тут воздушные
-Fast air: (range: Unlimited)
-Slow air: (range: 100*(TL-5))
++Fast air: (range: Unlimited)
++Slow air: (range: 100*(TL-5))
 
 
-Я фиг знает, как лучше сделать, но идея такова: Армия движется со скоростью самого медленного юнита. Юнит с весом Х можно погрузить в транспорт с типом (transport Х или больше), Медленный юнит погруженый в быстрый транспорт - едет со скоростью быстрого транспорта. 
-Можно сделать кнопку у отряда - "погрузить", по которой будет список доступного транспорта. Или автоматическую погрузку самых медленных юнитов в транспорт. 
-В свойства армии также надо вывести свободные/суммарные единицы транпорта.
-Mobility и Модификаторы нуждаются в поле комментариев. Эти комментарии должны быть доступны из панели армии.
++Я фиг знает, как лучше сделать, но идея такова: Армия движется со скоростью самого медленного юнита. Юнит с весом Х можно погрузить в транспорт с типом (transport Х или больше), Медленный юнит погруженый в быстрый транспорт - едет со скоростью быстрого транспорта. 
++Можно сделать кнопку у отряда - "погрузить", по которой будет список доступного транспорта. Или автоматическую погрузку самых медленных юнитов в транспорт. 
++В свойства армии также надо вывести свободные/суммарные единицы транпорта.
++Mobility и Модификаторы нуждаются в поле комментариев. Эти комментарии должны быть доступны из панели армии.
 
 
 Модификаторы, требующие логики
-Fanatic: Отряды с Опытом Good получают raise -50. Отряды с Опытом Elite получают Raise -100. Требует учета (см ниже)
-Flagship: Может взять только отряд с типом Naval. Отряд получает тип C3I, в дополнение к шаблону
-Hovercraft: Может взять только отряд с TL>7 И типом движения Motorized ИЛИ Coast. Отряд получает Скорость (80+(20*TL-6)/60+(15*TL-6)/160+(40*TL-3))
-Super-Soldier: Удваивает TS отряда, ПОСЛЕ применения всех прочих модификаторов
-Impetuous: Требует учета (см ниже)
++Fanatic: Отряды с Опытом Good получают raise -50. Отряды с Опытом Elite получают Raise -100. Требует учета (см ниже)
+-Flagship: Может взять только отряд с типом Naval. Отряд получает тип C3I, в дополнение к шаблону
++Hovercraft: Может взять только отряд с TL>7 И типом движения Motorized ИЛИ Coast. Отряд получает Скорость (80+(20*TL-6)/60+(15*TL-6)/160+(40*TL-3))
++Super-Soldier: Удваивает TS отряда, ПОСЛЕ применения всех прочих модификаторов
++Impetuous: Требует учета (см ниже)
+-Neutralize (Class): Это модификатор, но некоторые шаблоны его имеют от рождения. Требует учета в свойствах армии, как если бы был типом, но отдельно от общего типа. То есть, войско с кавалерией TS 10 и пикинерами ts 5, будет иметь в свойствах Cav:10, (cav):5
 
-Отряды с Fanatic и Impetuous нужно особо учитывать в свойствах армии - выводить % тех и других (по отдельности) от TS ИЛИ общего числа отрядов армии - что выше. (То есть если в армии 9 отрядов фанатиков с TS 1 и один танк с TS 100 - считаем, что fanatics: 90%.) 
++Отряды с Fanatic и Impetuous нужно особо учитывать в свойствах армии - выводить % тех и других (по отдельности) от TS ИЛИ общего числа отрядов армии - что выше. (То есть если в армии 9 отрядов фанатиков с TS 1 и один танк с TS 100 - считаем, что fanatics: 90%.) 
 
-Внезапно обнаружил: в армии нужно еще добавить количество отрядов одного типа
++Внезапно обнаружил: в армии нужно еще добавить количество отрядов одного типа
+
+
+
+
+templ1 = SquadTemplate.SquadTemplate(name=u'Bowmen', mobility=foot, type=[Fire], raise_cost=40, supply=8, weight=1, tl=2, ts=2, support=False)
+templ2 = SquadTemplate.SquadTemplate(name=u'Balloon', mobility=zero, type=[Air], raise_cost=50, supply=5, weight=2, tl=5, ts=1, support=True)
+templ3 = SquadTemplate.SquadTemplate(name=u'Cavalry Pistol', mobility=mount, type=[cavalery, Fire], raise_cost=100, supply=20, weight=2, tl=4, ts=3, support=False)
+templ4 = SquadTemplate.SquadTemplate(name=u'Cavalry Pistol', mobility=mount, type=[cavalery, Fire], raise_cost=100, supply=20, weight=2, tl=5, ts=6, support=False)
+templ5 = SquadTemplate.SquadTemplate(name=u'Draft Team', mobility=mount, type=[], raise_cost=100, supply=10, weight=2, tl=1, ts=0, support=False, transport=2)
+templ6 = SquadTemplate.SquadTemplate(name=u'Heavy Artillery', mobility=foot, type=[artillery], raise_cost=100, supply=10, weight=2, tl=2, ts=3, support=True)
+templ7 = SquadTemplate.SquadTemplate(name=u'Heavy Artillery', mobility=foot, type=[artillery], raise_cost=100, supply=10, weight=2, tl=3, ts=5, support=True)
+templ8 = SquadTemplate.SquadTemplate(name=u'Heavy Artillery', mobility=foot, type=[artillery], raise_cost=100, supply=10, weight=2, tl=4, ts=10, support=True)
+templ9 = SquadTemplate.SquadTemplate(name=u'Heavy Artillery', mobility=foot, type=[artillery], raise_cost=100, supply=10, weight=2, tl=5, ts=20, support=True)
+templ10 = SquadTemplate.SquadTemplate(name=u'Light Artillery', mobility=foot, type=[artillery], raise_cost=40, supply=8, weight=1, tl=2, ts=1, support=True)
+templ11 = SquadTemplate.SquadTemplate(name=u'Light Artillery', mobility=foot, type=[artillery], raise_cost=40, supply=8, weight=1, tl=3, ts=2, support=True)
+templ12 = SquadTemplate.SquadTemplate(name=u'Light Artillery', mobility=foot, type=[artillery], raise_cost=40, supply=8, weight=1, tl=4, ts=4, support=True)
+templ13 = SquadTemplate.SquadTemplate(name=u'Light Artillery', mobility=foot, type=[artillery], raise_cost=40, supply=8, weight=1, tl=5, ts=8, support=True)
+templ14 = SquadTemplate.SquadTemplate(name=u'Light Cavalry', mobility=mount, type=[cavalery, Recon], raise_cost=100, supply=20, weight=2, tl=2, ts=2, support=False)
+templ15 = SquadTemplate.SquadTemplate(name=u'medium Cavalry', mobility=mount, type=[cavalery, Fire], raise_cost=150, supply=30, weight=2, tl=2, ts=3, support=False)
+templ16 = SquadTemplate.SquadTemplate(name=u'Heavy Cavalry', mobility=mount, type=[cavalery], raise_cost=200, supply=40, weight=2, tl=2, ts=5, support=False)
+templ17 = SquadTemplate.SquadTemplate(name=u'Light Chariot', mobility=mount, type=[cavalery, Fire], raise_cost=100, supply=20, weight=4, tl=1, ts=2, support=False)
+templ18 = SquadTemplate.SquadTemplate(name=u'Heavy Chariot', mobility=mount, type=[cavalery], raise_cost=160, supply=32, weight=4, tl=1, ts=4, support=False)
+templ19 = SquadTemplate.SquadTemplate(name=u'Light Infantry', mobility=foot, type=[Recon], raise_cost=40, supply=8, weight=1, tl=1, ts=2, support=False)
+templ20 = SquadTemplate.SquadTemplate(name=u'Medium Infantry', mobility=foot, type=[], raise_cost=30, supply=6, weight=1, tl=1, ts=3, support=False)
+templ21 = SquadTemplate.SquadTemplate(name=u'Heavy Infantry', mobility=foot, type=[], raise_cost=40, supply=8, weight=1, tl=2, ts=4, support=False)
+templ22 = SquadTemplate.SquadTemplate(name=u'Horse Artillery', mobility=mount, type=[Artillery], raise_cost=150, supply=30, weight=2, tl=5, ts=10, support=False)
+templ24 = SquadTemplate.SquadTemplate(name=u'Line Infantry', mobility=foot, type=[Fire], raise_cost=30, supply=6, weight=1, tl=5, ts=3, support=False)
+templ25 = SquadTemplate.SquadTemplate(name=u'Horse Archer', mobility=mount, type=[cavalery, Fire, Recon], raise_cost=120, supply=24, weight=2, tl=2, ts=2, support=False)
+templ26 = SquadTemplate.SquadTemplate(name=u'Miners', mobility=foot, type=[Engeneering], raise_cost=30, supply=6, weight=1, tl=2, ts=1, support=True)
+templ27 = SquadTemplate.SquadTemplate(name=u'Miners', mobility=foot, type=[Engeneering], raise_cost=30, supply=6, weight=1, tl=3, ts=1, support=True)
+templ28 = SquadTemplate.SquadTemplate(name=u'Miners', mobility=foot, type=[Engeneering], raise_cost=30, supply=6, weight=1, tl=4, ts=2, support=True)
+templ29 = SquadTemplate.SquadTemplate(name=u'Miners', mobility=foot, type=[Engeneering], raise_cost=30, supply=6, weight=1, tl=5, ts=4, support=True)
+templ30 = SquadTemplate.SquadTemplate(name=u'Mounts', mobility=mount, type=[], raise_cost=60, supply=8, weight=1, tl=1, ts=0, support=False, transport=1)
+templ31 = SquadTemplate.SquadTemplate(name=u'Musketeers', mobility=foot, type=[Fire], raise_cost=30, supply=6, weight=1, tl=4, ts=3, support=False)
+templ32 = SquadTemplate.SquadTemplate(name=u'Skirmishers', mobility=foot, type=[Recon, Fire], raise_cost=30, supply=6, weight=1, tl=5, ts=3, support=False)
+templ33 = SquadTemplate.SquadTemplate(name=u'Stone-Age Warriors', mobility=foot, type=[Recon], raise_cost=25, supply=5, weight=1, tl=0, ts=1, support=False)
+templ34 = SquadTemplate.SquadTemplate(name=u'War Beast', mobility=foot, type=[Armor], raise_cost=400, supply=80, weight=4, tl=2, ts=20, support=False)
+templ35 = SquadTemplate.SquadTemplate(name=u'Boat', mobility=Coast, type=[], raise_cost=5, supply=1, weight=1, tl=1, ts=0, support=False, transport=1)
+templ36 = SquadTemplate.SquadTemplate(name=u'Large Boat', mobility=Coast, type=[], raise_cost=10, supply=1, weight=2, tl=1, ts=0, support=False, transport=2)
+templ37 = SquadTemplate.SquadTemplate(name=u'Light Galley', mobility=Coast, type=[], raise_cost=70, supply=14, weight=99, tl=1, ts=3, support=False, transport=1)
+templ38 = SquadTemplate.SquadTemplate(name=u'Longship', mobility=Coast, type=[], raise_cost=150, supply=30, weight=99, tl=2, ts=3, support=False, transport=7)
+templ39 = SquadTemplate.SquadTemplate(name=u'War Galley', mobility=Coast, type=[Naval], raise_cost=500, supply=100, weight=99, tl=2, ts=10, support=False, transport=3)
+templ40 = SquadTemplate.SquadTemplate(name=u'Cog', mobility=Sea, type=[], raise_cost=75, supply=8, weight=99, tl=3, ts=4, support=False, transport=5)
+templ41 = SquadTemplate.SquadTemplate(name=u'Brig', mobility=Sea, type=[Naval, Artillery], raise_cost=150, supply=15, weight=99, tl=4, ts=6, support=False, transport=6)
+templ42 = SquadTemplate.SquadTemplate(name=u'Galleon', mobility=Sea, type=[Naval, Artillery], raise_cost=750, supply=75, weight=99, tl=4, ts=30, support=False, transport=6)
+templ43 = SquadTemplate.SquadTemplate(name=u'Frigate', mobility=Sea, type=[Naval, Artillery], raise_cost=1000, supply=50, weight=99, tl=5, ts=150, support=False, transport=4)
+templ44 = SquadTemplate.SquadTemplate(name=u'Ship-of-the-Line', mobility=Sea, type=[Naval, Artillery], raise_cost=4000, supply=400, weight=99, tl=5, ts=300, support=False, transport=10)
+templ45 = SquadTemplate.SquadTemplate(name=u'Aquatic Warriors', mobility=Coast, type=[Naval], raise_cost=30, supply=6, weight=1, tl=0, ts=2, support=False)
+templ46 = SquadTemplate.SquadTemplate(name=u'Battle Mages', mobility=Foot, type=[Artillery, C3I, Fire, Recon], raise_cost=200, supply=40, weight=1, tl=0, ts=5, support=False)
+templ47 = SquadTemplate.SquadTemplate(name=u'Beasts', mobility=Mount, type=[Cavalery, Recon], raise_cost=50, supply=10, weight=2, tl=0, ts=1, support=False)
+templ48 = SquadTemplate.SquadTemplate(name=u'Flying Beasts', mobility=Sair, type=[Air], raise_cost=120, supply=40, weight=2, tl=0, ts=1, support=False, transport=1)
+templ49 = SquadTemplate.SquadTemplate(name=u'Flying Cavalery', mobility=Sair, type=[Air, Fire], raise_cost=600, supply=60, weight=2, tl=1, ts=2, support=False)
+templ50 = SquadTemplate.SquadTemplate(name=u'Flying Infantry', mobility=Sair, type=[Air, Recon], raise_cost=60, supply=20, weight=2, tl=0, ts=2, support=False)
+templ51 = SquadTemplate.SquadTemplate(name=u'Flying Leviathan', mobility=Sair, type=[Air], raise_cost=1000, supply=40, weight=99, tl=0, ts=150, support=False, transport=10)
+templ52 = SquadTemplate.SquadTemplate(name=u'Ogres', mobility=Foot, type=[], raise_cost=80, supply=8, weight=4, tl=0, ts=8, support=False)
++++ этот блок влит
+
+
+
 
 
 

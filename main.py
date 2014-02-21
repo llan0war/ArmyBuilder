@@ -106,6 +106,8 @@ class MainWindow(QtGui.QMainWindow):
             item = QtGui.QTreeWidgetItem(fields)
             for num, dat in enumerate(fields):
                 self.mainwindow.typetable.setItem(cur, num, QtGui.QTableWidgetItem(dat))
+
+
         self.mainwindow.mobilitytable.clear()
         self.mainwindow.mobilitytable.setColumnCount(3)
         for num, dat in enumerate(['ID', 'Mobility', 'Comment']):
@@ -115,7 +117,7 @@ class MainWindow(QtGui.QMainWindow):
         self.mainwindow.mobilitytable.setRowCount(len(quer))
 
         for cur, templ in enumerate(quer):
-            fields = [str(templ.id), templ.name]
+            fields = [str(templ.id), templ.name, templ.comment]
             item = QtGui.QTreeWidgetItem(fields)
             for num, dat in enumerate(fields):
                 self.mainwindow.mobilitytable.setItem(cur, num, QtGui.QTableWidgetItem(dat))
@@ -198,6 +200,13 @@ class MainWindow(QtGui.QMainWindow):
             core.saveData()
             self.load_data()
 
+    def on_mobilitytable_itemChanged(self, item):
+        if self.loaded and not item.column() == 7:
+            changed_item = SquadMobility.SquadMobility.get_by(id=int(self.mainwindow.mobilitytable.item(item.row(), 0).text()))
+            setattr(changed_item, changed_item.fields[item.column()].name, str(item.text()).decode('utf-8'))
+            core.saveData()
+            self.load_data()
+
     def on_armylist_itemClicked(self, item):
         #while item.parent():
         #    item = item.parent()
@@ -269,10 +278,10 @@ class MainWindow(QtGui.QMainWindow):
                 newtempl = SquadTemplate.SquadTemplate(name=u'new', mobility=SquadMobility.SquadMobility.query.first())
                 core.saveData()
                 self.load_data()
-            if curr_view == 4:
-                newtype = SquadTypes.SquadTypes(name=u'new')
-                core.saveData()
-                self.load_data()
+            #if curr_view == 4:
+            #    newtype = SquadMobility.SquadMobility(name=u'new')
+            #    core.saveData()
+            #    self.load_data()
             if curr_view == 0:
                 newarmy = Army.Army(name=u'new')
                 core.saveData()
@@ -302,13 +311,13 @@ class MainWindow(QtGui.QMainWindow):
                     changed_item.delete()
                 core.saveData()
                 self.load_data()
-            if curr_view == 4:
-                rows = list(set([t.row() for t in self.mainwindow.typetable.selectedItems()]))
-                for rr in rows:
-                    changed_item = SquadTypes.SquadTypes.get_by(id=int(self.mainwindow.typetable.item(rr, 0).text()))
-                    changed_item.delete()
-                core.saveData()
-                self.load_data()
+            #if curr_view == 4:
+            #    rows = list(set([t.row() for t in self.mainwindow.typetable.selectedItems()]))
+            #    for rr in rows:
+            #        changed_item = SquadTypes.SquadTypes.get_by(id=int(self.mainwindow.typetable.item(rr, 0).text()))
+            #        changed_item.delete()
+            #    core.saveData()
+            #    self.load_data()
             if curr_view == 0:
                 item = self.mainwindow.armylist.currentItem()
                 while item.parent():

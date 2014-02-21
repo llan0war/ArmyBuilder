@@ -7,7 +7,7 @@ class SquadTemplate(Entity):
 
     using_options(tablename='templates')
     id = Field(Integer, autoincrement=True, primary_key=True)
-    name = Field(Unicode, required=True)
+    name = Field(Text, required=True)
     ts = Field(Integer, required=False, default=0)
     raise_cost = Field(Integer, required=False, default=0)
     supply = Field(Integer, required=False, default=0)
@@ -16,7 +16,7 @@ class SquadTemplate(Entity):
     type = ManyToMany('SquadTypes')
     squads = OneToMany('ArmySquad')
     mobility = ManyToOne('SquadMobility')
-    speed = Field(Integer, required=False, default=0)
+    speed = Field(Text, required=False)
     transport = Field(Integer, required=False, default=0)
     support = Field(Boolean, required=False, default=False)
     stype = 'Squad'

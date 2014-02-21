@@ -6,7 +6,7 @@ class SquadMobility(Entity):
 
     using_options(tablename='mobility')
     id = Field(Integer, autoincrement=True, primary_key=True)
-    name = Field(Unicode, required=True)
+    name = Field(Text, required=True)
     squads = OneToMany('ArmySquad')
     templ = OneToMany('SquadTemplate')
     fields = [id, name]

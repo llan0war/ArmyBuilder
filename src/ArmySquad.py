@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 __author__ = 'a.libkind'
 
 from elixir import *
@@ -8,7 +11,7 @@ class ArmySquad(Entity):
     using_options(tablename='squads')
     templ = ManyToOne('SquadTemplate')
     id = Field(Integer, autoincrement=True, primary_key=True)
-    name = Field(Unicode, required=True)
+    name = Field(Text, required=True)
     mods = ManyToMany('SquadMods')
     casualities = Field(Integer, required=False, default=0)
     ts = Field(Integer, required=False, default=0)
@@ -17,14 +20,15 @@ class ArmySquad(Entity):
     supply = Field(Integer, required=False, default=0)
     weight = Field(Integer, required=False, default=0)
     tl = Field(Integer, required=False, default=0)
-    speed = Field(Integer, required=False, default=0)
+    speed = Field(Text, required=False)
     mobility = ManyToOne('SquadMobility')
     equip = ManyToOne('SquadEquip')
     exp = ManyToOne('SquadExp')
     army = ManyToOne('Army')
     transport = Field(Integer, required=False, default=0)
     support = Field(Boolean, required=False, default=False)
-    transporting = Field(String, required=False, default='') # id,id,id,id
+    transporting = OneToMany('ArmySquad') # кого везем
+    transported = ManyToOne('ArmySquad') # кто нас везет
     fields = [id, name, type, mods, casualities, templ, mobility]
     stype = 'Squad'
 

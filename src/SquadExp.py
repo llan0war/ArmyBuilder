@@ -6,7 +6,7 @@ class SquadExp(Entity):
 
     using_options(tablename='exp')
     id = Field(Integer, autoincrement=True, primary_key=True)
-    name = Field(Unicode, required=True)
+    name = Field(Text, required=True)
     squads = OneToMany('ArmySquad')
     ts = Field(Integer, required=True)
     raise_cost = Field(Integer, required=True)

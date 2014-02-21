@@ -36,7 +36,7 @@ class MainWindow(QtGui.QMainWindow):
     def fill_armytree(self):
         self.loaded = False
         self.mainwindow.armylist.clear()
-        self.mainwindow.armylist.setHeaderItem(QtGui.QTreeWidgetItem(['Name', 'ID', 'SType' 'TS', 'Raise', 'Supply', 'Weight', 'TL', 'Type', 'Mods', 'Casualities']))
+        self.mainwindow.armylist.setHeaderItem(QtGui.QTreeWidgetItem(['Name', 'ID', 'SType', 'TS', 'Raise', 'Supply', 'Weight', 'TL', 'Type', 'Mods', 'Casualities']))
         self.mainwindow.armylist.setColumnHidden(1, True)
         self.mainwindow.armylist.setColumnHidden(2, True)
         quer = Army.Army.query.all()
@@ -191,8 +191,7 @@ class MainWindow(QtGui.QMainWindow):
     def on_templatetable_itemChanged(self, item):
         if self.loaded and not item.column() == 7:
             changed_item = SquadTemplate.SquadTemplate.get_by(id=int(self.mainwindow.templatetable.item(item.row(), 0).text()))
-            print 'Changed %s value to %s' % (changed_item.fields[item.column()].name, str(item.text()))
-            setattr(changed_item, changed_item.fields[item.column()].name, str(item.text()))
+            setattr(changed_item, changed_item.fields[item.column()].name, str(item.text()).decode('utf-8'))
             core.saveData()
 
     def on_armylist_itemClicked(self, item):
@@ -204,24 +203,28 @@ class MainWindow(QtGui.QMainWindow):
             self.mainwindow.armyopts.setText(changed_item.typelist() + changed_item.impetous_fanatics_calcer())
 
     def on_armylist_itemDoubleClicked(self, item):
-        pass
+        if item.text(2) == 'Squad':
+            changed_item = ArmySquad.ArmySquad.get_by(id=int(item.text(1)))
+            dlg = SquadMod(self, arm=changed_item.army, item=changed_item)
+            if dlg.exec_():
+                self.load_data()
 
     def on_squadtable_itemChanged(self, item):
         if self.loaded:
             changed_item = ArmySquad.ArmySquad.get_by(id=int(self.mainwindow.squadtable.item(item.row(), 0).text()))
-            setattr(changed_item, changed_item.fields[item.column()].name, str(item.text()))
+            setattr(changed_item, changed_item.fields[item.column()].name, str(item.text()).decode('utf-8'))
             core.saveData()
 
     def on_modstable_itemChanged(self, item):
         if self.loaded:
             changed_item = SquadMods.SquadMods.get_by(id=int(self.mainwindow.modstable.item(item.row(), 0).text()))
-            setattr(changed_item, changed_item.fields[item.column()].name, str(item.text()))
+            setattr(changed_item, changed_item.fields[item.column()].name, str(item.text()).decode('utf-8'))
             core.saveData()
 
     def on_typetable_itemChanged(self, item):
         if self.loaded:
             changed_item = SquadTypes.SquadTypes.get_by(id=int(self.mainwindow.typetable.item(item.row(), 0).text()))
-            setattr(changed_item, changed_item.fields[item.column()].name, str(item.text()))
+            setattr(changed_item, changed_item.fields[item.column()].name, str(item.text()).decode('utf-8'))
             core.saveData()
 
     def on_updateaction_triggered(self, foo=True):

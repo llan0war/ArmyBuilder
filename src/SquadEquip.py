@@ -6,7 +6,7 @@ class SquadEquip(Entity):
 
     using_options(tablename='equip')
     id = Field(Integer, autoincrement=True, primary_key=True)
-    name = Field(Unicode, required=True)
+    name = Field(Text, required=True)
     squads = OneToMany('ArmySquad')
     ts = Field(Integer, required=True)
     raise_cost = Field(Integer, required=True)

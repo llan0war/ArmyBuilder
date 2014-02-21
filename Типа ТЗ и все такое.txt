@@ -129,6 +129,8 @@ templ51 = SquadTemplate.SquadTemplate(name=u'Flying Leviathan', mobility=Sair, t
 templ52 = SquadTemplate.SquadTemplate(name=u'Ogres', mobility=Foot, type=[], raise_cost=80, supply=8, weight=4, tl=0, ts=8, support=False)
 
 
+
+
 Airborne = SquadMods.SquadMods(name=u'Airborne', ts=0, raise_cost=20, supply=20)
 All-Weather = SquadMods.SquadMods(name=u'All-Weather', ts=0, raise_cost=20, supply=20)
 Disloyal = SquadMods.SquadMods(name=u'Disloyal', ts=0, raise_cost=0, supply=0)

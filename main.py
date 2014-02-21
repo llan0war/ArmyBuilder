@@ -322,7 +322,7 @@ class MainWindow(QtGui.QMainWindow):
                 item = self.mainwindow.armylist.currentItem()
                 while item.parent():
                     item = item.parent()
-                if item.text(2) == 'Army':
+                if item.text(2) == 'Army' and not item.text(1) == '999':
                     changed_item = Army.Army.get_by(id=int(item.text(1)))
                     changed_item.delete()
                     core.saveData()
